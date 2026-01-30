@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Alpina OS v7.6 | Leadership & Orchestration</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@200;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #070A12;
+      --fg: #EAF2FF;
+      --muted: rgba(234, 242, 255, .72);
+      --glass: rgba(0, 0, 0, .55);
+      --stroke: rgba(255, 255, 255, .12);
+      --accent: #00F5FF;
+      --accent2: #6A00FF;
+      --alpina: #9CC11F;
+    }
+
+    html, body { height: 100%; margin: 0; overflow: hidden; background: var(--bg); color: var(--fg); }
+    body {
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(0, 245, 255, .12), transparent 55%),
+        radial-gradient(700px 400px at 60% 90%, rgba(156, 193, 31, .10), transparent 60%),
+        var(--bg);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ===== Header Fijo ===== */
+    .header {
+      position: fixed; top: 24px; left: 24px; right: 24px; z-index: 9999;
+      display: flex; align-items: center; gap: 24px; pointer-events: none;
+    }
+    .logo-container {
+      background: transparent;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.55);
+      display: flex;
+      pointer-events: auto;
+      backdrop-filter: blur(14px);
+    }
+    .logo {
+      height: 44px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.45));
+      mix-blend-mode: screen;
+    }
+
+    /* ===== UI Components ===== */
+    .glass-panel {
+      background: var(--glass); backdrop-filter: blur(40px);
+      border: 1px solid var(--stroke); border-radius: 32px;
+    }
+
+    /* Animación de entrada de módulos */
+    .module-content {
+      display: none;
+      min-height: 100%;
+      flex-direction: column;
+      animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .module-content.active { display: flex; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Botones de Navegación */
+    .nav-btn {
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    .nav-btn:hover { background: rgba(255,255,255,0.05); }
+    .nav-btn.active {
+      border-left: 3px solid var(--alpina);
+      background: linear-gradient(90deg, rgba(156, 193, 31, 0.15), transparent);
+      color: var(--alpina);
+    }
+    .nav-btn.active i { color: var(--alpina); opacity: 1; }
+    .nav-btn.active span { font-weight: 700; color: white; }
+
+    /* Custom Scrollbar */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent), var(--accent2)); border-radius: 10px; }
+
+    /* Scanline effect */
+    .scanline {
+      width: 100%; height: 2px; background: rgba(0, 245, 255, 0.05);
+      position: absolute; top: 0; left: 0; z-index: 100;
+      pointer-events: none; animation: scan 4s linear infinite;
+    }
+    @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+    .highlight-text { color: var(--accent); font-weight: 600; }
+
+    .manifesto-title {
+      background: linear-gradient(90deg, #fff, var(--alpina));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #module-indicator { pointer-events: auto; }
+
+    /* Estilos específicos para tarjetas de cadena de valor */
+    .chain-card { transition: all 0.3s ease; }
+    .chain-card:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.08); }
+
+    /* ===== Modal para imagen (skills) ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      width: min(1100px, 95vw);
+      max-height: 90vh;
+      overflow: hidden;
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.60);
+      box-shadow: 0 20px 80px rgba(0,0,0,.65);
+      position: relative;
+    }
+    .modal-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.35);
+    }
+    .modal-title {
+      font-size: 11px;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(234,242,255,.75);
+    }
+    .modal-close {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.85);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .modal-close:hover { transform: scale(1.05); background: rgba(255,255,255,.10); }
+
+    .modal-body {
+      padding: 14px;
+      overflow: auto;
+      max-height: calc(90vh - 56px);
+    }
+    .modal-body img {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+
+    /* ===== Tech block morado para Cimientos en "Dos Frentes" ===== */
+    .tech-foundation {
+      border: 1px solid rgba(106,0,255,.25);
+      background:
+        radial-gradient(800px 300px at 20% 0%, rgba(106,0,255,.18), transparent 55%),
+        radial-gradient(700px 320px at 90% 90%, rgba(0,245,255,.10), transparent 60%),
+        rgba(0,0,0,.45);
+      position: relative;
+      overflow: hidden;
+    }
+    .tech-foundation:before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(90deg, rgba(0,245,255,.14), rgba(106,0,255,.18), rgba(156,193,31,.10));
+      opacity: .25;
+      filter: blur(18px);
+      pointer-events: none;
+    }
+    .tech-foundation:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: .07;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="scanline"></div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-container">
+      <!-- Cambia este src por tu PNG local si ya lo tienes en la carpeta, ejemplo: src="LOGO 375.png" -->
+      <img src="LOGO 375.png" alt="Alpina" class="logo" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Logo_Alpina.svg/1200px-Logo_Alpina.svg.png';">
+    </div>
+
+    <!-- MODULE INDICATOR -->
+    <div id="module-indicator" class="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-black/30 backdrop-blur-xl">
+      <span class="text-[8px] font-mono text-cyan-400 tracking-[0.25em]">MODULE</span>
+      <span id="indicator-text" class="text-[10px] font-bold uppercase tracking-widest text-white/80 italic">01. El Manifiesto</span>
+    </div>
+
+    <div class="hidden md:block ml-auto pr-10 text-right pointer-events-auto">
+      <p class="text-[8px] font-mono text-cyan-400 opacity-60 tracking-widest uppercase">Orchestration OS v7.6</p>
+      <p class="text-[7px] text-gray-500 font-mono">STATUS: STABLE CORE</p>
+    </div>
+  </header>
+
+  <div class="flex h-screen pt-24 pb-8 px-6 gap-6">
+
+    <!-- SIDEBAR -->
+    <aside class="w-80 flex flex-col gap-4 h-full z-10">
+      <nav class="flex-grow flex flex-col gap-2 overflow-y-auto custom-scroll pr-2">
+        <button onclick="showModule('manifiesto')" id="btn-manifiesto" class="nav-btn active glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-quote-left text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">01. El Manifiesto</span>
+        </button>
+
+        <button onclick="showModule('contexto')" id="btn-contexto" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-satellite-dish text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">02. Contexto Disruptivo</span>
+        </button>
+
+        <button onclick="showModule('estrategia')" id="btn-estrategia" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-layer-group text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">03. Los Dos Frentes</span>
+        </button>
+
+        <button onclick="showModule('individual')" id="btn-individual" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-brain text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">04. Productividad Individual</span>
+        </button>
+
+        <button onclick="showModule('cadena')" id="btn-cadena" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-link text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">05. Productividad Compañía</span>
+        </button>
+
+        <button onclick="showModule('vp-rol')" id="btn-vp-rol" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-shield-halved text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">06. Rol VP & Cimientos</span>
+        </button>
+
+        <!-- NUEVO: RESUMEN -->
+        <button onclick="showModule('resumen')" id="btn-resumen" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-grid-2 text-xs opacity-50 transition"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest transition">07. Resumen</span>
+        </button>
+      </nav>
+
+      <div class="glass-panel p-6 border-t-2 border-[#9CC11F]/40">
+        <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mb-2">
+          <span>PROGRESSION</span>
+          <span class="text-cyan-400 font-bold animate-pulse" id="progress-percent">16%</span>
+        </div>
+        <div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-gradient-to-r from-cyan-400 to-[#9CC11F] h-full w-[16%] transition-all duration-700"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWPORT -->
+    <main id="main-container" class="flex-grow glass-panel relative p-10 overflow-y-auto custom-scroll z-0">
+      <div id="viewport" class="h-full">
+
+        <!-- 01. EL MANIFIESTO -->
+        <div id="mod-manifiesto" class="module-content active justify-center">
+          <div class="max-w-5xl">
+            <h4 class="text-cyan-400 font-bold tracking-[0.5em] text-[10px] mb-4 uppercase opacity-80 italic">Evolución Estratégica 2026</h4>
+            <h1 class="text-5xl font-bold font-space leading-[1.1] mb-10 manifesto-title uppercase">
+              EL MUNDO ESTÁ CAMBIANDO.<br>
+              LIDERAR ES <span class="italic underline decoration-cyan-400">ORQUESTAR.</span>
+            </h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 text-blue-100/80 leading-relaxed text-sm">
+              <div class="space-y-4">
+                <p>La tecnología, los datos y la velocidad ya no son promesas; son el entorno en el que operan los negocios. Durante años, el camino fue la eficiencia y la escala, pero hoy el desafío es la <span class="text-white font-bold">transformación real.</span></p>
+                <p>¿Para qué nos transformamos? No es solo para competir, es para ganar <span class="highlight-text">tiempo y claridad</span>. La volatilidad es la nueva normalidad.</p>
+              </div>
+
+              <div class="space-y-4">
+                <div class="p-6 bg-[#9CC11F]/10 border-l-4 border-[#9CC11F] rounded-r-2xl mb-4">
+                  <p class="text-xs font-bold text-white mb-2 uppercase tracking-widest">Principio:</p>
+                  <p class="text-sm italic">"Cuando personas, procesos y tecnología se integran de forma armónica, la transformación deja de ser un discurso y se vuelve realidad."</p>
+                </div>
+                <p class="text-lg font-space italic text-white mt-6">
+                  "En Alpina, la IA no opera procesos. <span class="text-[#9CC11F]">Orquesta decisiones</span>."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02. CONTEXTO DISRUPTIVO -->
+        <div id="mod-contexto" class="module-content gap-6">
+          <div class="flex justify-between items-center">
+            <h3 class="text-4xl font-bold font-space uppercase">ELON MUSK & <span class="text-cyan-400">9,000 SATÉLITES</span></h3>
+            <span class="text-[10px] font-mono bg-cyan-400/10 text-cyan-400 px-4 py-2 rounded-full border border-cyan-400/20 uppercase tracking-widest">Global Link: SpaceX Starlink Constellation</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div class="md:col-span-8 md:col-start-3 flex flex-col justify-center gap-6">
+              <div class="p-6 glass-panel border-l-4 border-cyan-400 bg-white/5">
+                <h4 class="font-bold text-xs mb-2 uppercase tracking-tighter">Referente de Disrupción</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed italic">Starlink nos enseña que el entorno global es una red de datos en tiempo real: velocidad, cobertura y coordinación.</p>
+              </div>
+              <div class="p-6 glass-panel border-l-4 border-[#9CC11F] bg-white/5">
+                <h4 class="font-bold text-xs mb-2 uppercase tracking-tighter">Velocidad de Liderazgo</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed italic">Sin datos no hay claridad. Liderar hoy significa orquestar procesos sensibles al cambio con precisión.</p>
+              </div>
+
+              <div class="glass-panel p-6 bg-white/5 border border-white/10">
+                <div class="flex items-center justify-between mb-4">
+                  <p class="text-[10px] font-mono text-white/60 uppercase tracking-[0.35em]">Implicaciones para Liderazgo</p>
+                  <span class="text-[9px] font-mono text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-3 py-1 rounded-full">CONTEXTO</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="p-4 rounded-2xl border border-white/10 bg-black/30">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest">Velocidad</p>
+                    <p class="text-[11px] text-white/80 leading-relaxed mt-2 italic">Decidir con menos ciclos y más claridad.</p>
+                  </div>
+                  <div class="p-4 rounded-2xl border border-white/10 bg-black/30">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest">Datos</p>
+                    <p class="text-[11px] text-white/80 leading-relaxed mt-2 italic">Sin contexto no hay dirección: hay ruido.</p>
+                  </div>
+                  <div class="p-4 rounded-2xl border border-white/10 bg-black/30">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest">Orquestación</p>
+                    <p class="text-[11px] text-white/80 leading-relaxed mt-2 italic">Coordinar equipos y sistemas como un solo E2E.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 03. ESTRATEGIA -->
+        <div id="mod-estrategia" class="module-content justify-center text-center">
+          <h2 class="text-6xl font-bold font-space mb-10 uppercase">Estrategia en <span class="text-[#9CC11F]">Dos Niveles</span></h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div class="glass-panel p-10 border-l-4 border-cyan-400 hover:bg-white/5 transition group cursor-pointer" onclick="showModule('individual')">
+              <i class="fa-solid fa-user-check text-4xl mb-5 text-cyan-400 group-hover:scale-110 transition"></i>
+              <h3 class="text-xl font-bold uppercase mb-3 tracking-widest">Productividad Individual</h3>
+              <p class="text-xs text-gray-500 leading-relaxed italic">La IA amplificando al ser humano para reinventar su rol y crear valor.</p>
+            </div>
+
+            <div class="glass-panel p-10 border-l-4 border-[#9CC11F] hover:bg-white/5 transition group cursor-pointer" onclick="showModule('cadena')">
+              <i class="fa-solid fa-link text-4xl mb-5 text-[#9CC11F] group-hover:scale-110 transition"></i>
+              <h3 class="text-xl font-bold uppercase mb-3 tracking-widest">Productividad Compañía</h3>
+              <p class="text-xs text-gray-500 leading-relaxed italic">Potenciar procesos E2E para acelerar decisiones, servicio y desempeño.</p>
+            </div>
+          </div>
+
+          <!-- Cimientos (más visible + tech morado) -->
+          <div class="mt-10 max-w-5xl mx-auto">
+            <div class="glass-panel tech-foundation p-8 text-left relative">
+              <div class="relative">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-400/25 bg-purple-500/10">
+                      <i class="fa-solid fa-layer-group text-purple-300 text-xs"></i>
+                      <span class="text-[9px] font-mono text-purple-200 tracking-[0.35em] uppercase">CIMIENTOS</span>
+                    </span>
+                    <span class="text-[9px] font-mono text-white/50 tracking-[0.35em] uppercase">Data • Tecnología • Procesos</span>
+                  </div>
+
+                  <span class="text-[9px] font-mono text-cyan-300 bg-cyan-400/10 border border-cyan-400/20 px-3 py-1 rounded-full">
+                    SIGNAL LOCKED
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="p-5 rounded-2xl border border-white/10 bg-black/35">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Data</p>
+                    <p class="text-[11px] text-white/80 italic leading-relaxed">Gestión del cambio, adopción y capacidad analítica para decidir.</p>
+                  </div>
+                  <div class="p-5 rounded-2xl border border-white/10 bg-black/35">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Tecnología</p>
+                    <p class="text-[11px] text-white/80 italic leading-relaxed">Gobierno: arquitectura, estándares, seguridad y plataformas.</p>
+                  </div>
+                  <div class="p-5 rounded-2xl border border-white/10 bg-black/35">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Procesos</p>
+                    <p class="text-[11px] text-white/80 italic leading-relaxed">Riesgos: control, continuidad, roles claros y cumplimiento.</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04. PRODUCTIVIDAD INDIVIDUAL -->
+        <div id="mod-individual" class="module-content gap-8">
+          <div class="flex items-end justify-between border-b border-white/10 pb-5">
+            <h1 class="text-5xl font-bold font-space uppercase leading-tight">EL HUMANO <span class="text-cyan-400 italic">AMPLIFICADO</span></h1>
+            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-3 py-1 rounded-full uppercase tracking-widest">
+              WEF • Future of Jobs 2025
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div class="space-y-6">
+              <p class="text-lg text-blue-100/70 italic leading-relaxed">
+                "Cambiamos el rol: dejar de ejecutar tareas repetitivas para enfocarnos en analizar y decidir. La tecnología no reemplaza al líder, le da superpoderes."
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="p-4 glass-panel border-l-2 border-white/20">
+                  <h4 class="text-[10px] font-bold uppercase mb-1 text-cyan-400">Analizar y decidir</h4>
+                  <p class="text-[11px] text-gray-400 italic">Foco en creación de valor estratégico.</p>
+                </div>
+                <div class="p-4 glass-panel border-l-2 border-white/20">
+                  <h4 class="text-[10px] font-bold uppercase mb-1 text-[#9CC11F]">Decidir mejor</h4>
+                  <p class="text-[11px] text-gray-400 italic">IA como copiloto del conocimiento humano.</p>
+                </div>
+              </div>
+
+              <div class="glass-panel p-6 bg-white/5 border border-white/10">
+                <p class="text-[10px] font-mono text-white/60 uppercase tracking-[0.35em] mb-4">Cambio de rol del líder</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="p-4 rounded-2xl border border-white/10 bg-black/30">
+                    <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Antes</p>
+                    <ul class="text-[11px] text-white/75 leading-relaxed list-disc pl-4 space-y-1 italic">
+                      <li>Ejecutar tareas repetitivas</li>
+                      <li>Buscar info en múltiples fuentes</li>
+                      <li>Decidir con poca visibilidad</li>
+                    </ul>
+                  </div>
+                  <div class="p-4 rounded-2xl border border-[#9CC11F]/20 bg-[#9CC11F]/5">
+                    <p class="text-[9px] font-mono text-[#cfe88a] uppercase tracking-widest mb-2">Ahora</p>
+                    <ul class="text-[11px] text-white/80 leading-relaxed list-disc pl-4 space-y-1 italic">
+                      <li>Analizar y priorizar por valor</li>
+                      <li>Tomar decisiones con contexto</li>
+                      <li>Orquestar Data + Procesos + Tecnología</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Imagen skills + botón popout -->
+            <div class="glass-panel p-6 bg-white/5 border border-white/10">
+              <div class="flex items-center justify-between mb-4">
+                <p class="text-[10px] font-mono text-white/60 uppercase tracking-[0.35em]">Skills hacia 2030</p>
+                <span class="text-[9px] font-mono text-purple-300 bg-purple-500/10 border border-purple-400/20 px-3 py-1 rounded-full">
+                  AI & Big Data
+                </span>
+              </div>
+
+              <img
+                src="skills2030.png"
+                alt="Skills 2030 (WEF Future of Jobs 2025)"
+                class="w-full h-auto rounded-2xl border border-white/10 bg-black/20"
+                onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<div class=&quot;p-4 rounded-2xl border border-red-500/20 bg-red-500/10 text-[11px] text-red-200 italic&quot;>No se encontró <b>skills2030.png</b> en la carpeta. Revisa nombre exacto (mayúsculas/minúsculas) y ubicación.</div>')"
+              />
+
+              <div class="mt-5 flex justify-end">
+                <button onclick="openSkillsModal()" class="px-5 py-2 rounded-full border border-cyan-400/25 bg-cyan-400/10 text-cyan-200 text-[10px] font-mono uppercase tracking-[0.35em] hover:bg-cyan-400/15 transition">
+                  Ver gráfico
+                </button>
+              </div>
+
+              <p class="mt-4 text-[11px] text-white/60 italic leading-relaxed">
+                Fuente: WEF — <span class="text-white/80">Future of Jobs Report 2025</span>. El gráfico muestra qué skills serán más “core” y cuáles crecerán en uso hacia 2030.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05. PRODUCTIVIDAD COMPAÑÍA (Cadena de Valor) -->
+        <div id="mod-cadena" class="module-content">
+          <div class="flex justify-between items-end mb-8 border-b border-white/10 pb-6">
+            <h2 class="text-3xl font-bold font-space uppercase tracking-widest text-white">Productividad Compañía: <span class="text-[#9CC11F]">E2E</span></h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- 01. Planeación -->
+              <div class="glass-panel p-6 border-l-2 border-cyan-400 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-cyan-400">Planeación</h4>
+                  <i class="fa-solid fa-chart-pie text-cyan-400 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Danone</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Machine Learning para predecir demanda con granularidad diaria, reduciendo error de pronóstico.</p>
+              </div>
+
+              <!-- 02. Abastecimiento -->
+              <div class="glass-panel p-6 border-l-2 border-purple-500 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-purple-300">Abastecimiento</h4>
+                  <i class="fa-solid fa-truck-field text-purple-300 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Nestlé</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Trazabilidad en origen con monitoreo en tiempo real para decisiones de sourcing.</p>
+              </div>
+
+              <!-- 03. Manufactura -->
+              <div class="glass-panel p-6 border-l-2 border-[#9CC11F] bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-[#9CC11F]">Manufactura</h4>
+                  <i class="fa-solid fa-industry text-[#9CC11F] text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Fonterra</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Digital Twins para ajustar parámetros automáticamente según variabilidad de materia prima.</p>
+              </div>
+
+              <!-- 04. Op. Bajo Techo -->
+              <div class="glass-panel p-6 border-l-2 border-white/20 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-white/90">Op. Bajo Techo</h4>
+                  <i class="fa-solid fa-warehouse text-white/80 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Unilever</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">AMRs y picking inteligente con lógica FEFO dinámica.</p>
+              </div>
+
+              <!-- 05. Distribución -->
+              <div class="glass-panel p-6 border-l-2 border-cyan-400 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-cyan-300">Distribución</h4>
+                  <i class="fa-solid fa-route text-cyan-300 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Arla Foods</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Ruteo dinámico que reduce emisiones y mantiene cadena de frío.</p>
+              </div>
+
+              <!-- 06. Comercial -->
+              <div class="glass-panel p-6 border-l-2 border-purple-500 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-purple-300">Comercial</h4>
+                  <i class="fa-solid fa-shop text-purple-300 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: PepsiCo</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Visión artificial en punto de venta para auditar estanterías y sugerir pedidos.</p>
+              </div>
+
+              <!-- 07. Mercadeo -->
+              <div class="glass-panel p-6 border-l-2 border-[#9CC11F] bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-[#9CC11F]">Mercadeo</h4>
+                  <i class="fa-solid fa-bullhorn text-[#9CC11F] text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Coca-Cola</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">GenAI para hyper-personalizar campañas y co-crear contenido en tiempo real.</p>
+              </div>
+
+              <!-- 08. Innovación -->
+              <div class="glass-panel p-6 border-l-2 border-white/20 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-white/90">Innovación</h4>
+                  <i class="fa-solid fa-lightbulb text-white/80 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Starbucks</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Algoritmos que ajustan portafolio según clima y preferencias locales.</p>
+              </div>
+
+              <!-- 09. Transformación -->
+              <div class="glass-panel p-6 border-l-2 border-cyan-400 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-cyan-300">Transformación</h4>
+                  <i class="fa-solid fa-rocket text-cyan-300 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Amazon</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Cultura de experimentación y ownership del roadmap.</p>
+              </div>
+
+              <!-- 10. Finanzas -->
+              <div class="glass-panel p-6 border-l-2 border-purple-500 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-purple-300">Finanzas</h4>
+                  <i class="fa-solid fa-chart-line text-purple-300 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Walmart</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Automatización cognitiva para conciliaciones y pagos.</p>
+              </div>
+
+              <!-- 11. Talento -->
+              <div class="glass-panel p-6 border-l-2 border-[#9CC11F] bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-[#9CC11F]">Talento</h4>
+                  <i class="fa-solid fa-users text-[#9CC11F] text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: IBM</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">IA que mapea skills y sugiere rutas para cerrar brechas digitales.</p>
+              </div>
+
+              <!-- 12. Servicios Corp. -->
+              <div class="glass-panel p-6 border-l-2 border-white/20 bg-white/5 chain-card">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold text-[11px] uppercase text-white/90">Servicios Corp.</h4>
+                  <i class="fa-solid fa-headset text-white/80 text-sm"></i>
+                </div>
+                <p class="text-[10px] text-white font-bold mb-2">Benchmark: Microsoft</p>
+                <p class="text-[11px] text-gray-300 italic leading-relaxed">Copilotos internos para automatizar revisión de contratos y tickets.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 06. ROL VP & CIMIENTOS -->
+        <div id="mod-vp-rol" class="module-content justify-center">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full">
+            <div class="space-y-8">
+              <div>
+                <h2 class="text-4xl font-bold font-space uppercase italic mb-4 leading-tight">NUESTRO ROL:<br><span class="text-[#9CC11F]">CONSTRUIR CIMIENTOS</span></h2>
+                <p class="text-sm text-blue-100/50 italic leading-relaxed">Priorizar por valor, dar gobierno y asegurar que cada iniciativa tenga propósito.</p>
+              </div>
+
+              <div class="grid grid-cols-1 gap-3">
+                <div class="p-5 glass-panel border-l-4 border-cyan-400 flex justify-between items-center group hover:bg-white/5 transition">
+                  <span class="text-[11px] font-bold uppercase tracking-widest">Tecnología & Datos</span>
+                  <i class="fa-solid fa-server text-cyan-400 group-hover:scale-125 transition"></i>
+                </div>
+                <div class="p-5 glass-panel border-l-4 border-purple-500 flex justify-between items-center group hover:bg-white/5 transition">
+                  <span class="text-[11px] font-bold uppercase tracking-widest">Priorización por Valor</span>
+                  <i class="fa-solid fa-ranking-star text-purple-500 group-hover:scale-125 transition"></i>
+                </div>
+                <div class="p-5 glass-panel border-l-4 border-white flex justify-between items-center group hover:bg-white/5 transition">
+                  <span class="text-[11px] font-bold uppercase tracking-widest">Gobernanza de Proyectos</span>
+                  <i class="fa-solid fa-scale-balanced text-white group-hover:scale-125 transition"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel p-12 text-center flex flex-col justify-center h-[500px] border-t-8 border-[#9CC11F] relative overflow-hidden">
+              <div class="absolute inset-0 bg-white/5 opacity-5 flex items-center justify-center">
+                <i class="fa-solid fa-cow text-[400px]"></i>
+              </div>
+              <h3 class="text-3xl font-bold font-space uppercase mb-4 tracking-tighter italic">¿ESTÁS LISTO PARA LIDERAR?</h3>
+              <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.4em] mb-10">Protocolo de Transformación Alpina 2026</p>
+
+              <div class="flex justify-center gap-3">
+                <button onclick="showModule('manifiesto')" class="px-8 py-3 bg-white text-black font-bold rounded-full text-[10px] uppercase tracking-widest hover:bg-[#9CC11F] transition">
+                  Reiniciar interfaz
+                </button>
+
+                <!-- BOTÓN CORREGIDO: ahora llama goToResumen() -->
+                <button onclick="goToResumen()" class="px-8 py-3 bg-white/10 text-white font-bold rounded-full text-[10px] uppercase tracking-widest border border-white/15 hover:bg-white/15 transition">
+                  Ir al resumen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 07. RESUMEN (nuevo) -->
+        <div id="mod-resumen" class="module-content gap-8">
+          <div class="flex items-end justify-between border-b border-white/10 pb-5">
+            <h2 class="text-4xl font-bold font-space uppercase tracking-widest text-white">Resumen</h2>
+            <span class="text-[10px] font-mono text-[#9CC11F] bg-[#9CC11F]/10 border border-[#9CC11F]/20 px-3 py-1 rounded-full uppercase tracking-widest">
+              ORCHESTRATION SNAPSHOT
+            </span>
+          </div>
+
+          <!-- Tech layout: dos bloques arriba + transversal abajo -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="glass-panel p-8 border-l-4 border-cyan-400 bg-white/5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold uppercase tracking-widest">Productividad individual</h3>
+                <i class="fa-solid fa-user-astronaut text-cyan-300"></i>
+              </div>
+              <ul class="text-[12px] text-white/80 italic leading-relaxed list-disc pl-5 space-y-2">
+                <li>Definir el <b>Alpinista del futuro</b>.</li>
+                <li>IA Driven / Data Driven / profundidad.</li>
+                <li>Skills clave: <b>AI & Big Data</b>, pensamiento analítico, creatividad, resiliencia.</li>
+              </ul>
+            </div>
+
+            <div class="glass-panel p-8 border-l-4 border-[#9CC11F] bg-white/5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold uppercase tracking-widest">Productividad compañía</h3>
+                <i class="fa-solid fa-sitemap text-[#9CC11F]"></i>
+              </div>
+              <ul class="text-[12px] text-white/80 italic leading-relaxed list-disc pl-5 space-y-2">
+                <li>Intermediación de base (Diagnóstico → Priorización → Ejecutar).</li>
+                <li>Procesos E2E como “motor” de desempeño y servicio.</li>
+                <li>Orquestación: decisiones, prioridades, acciones.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="glass-panel tech-foundation p-8">
+            <div class="relative">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold uppercase tracking-widest text-white">Cimientos</h3>
+                <span class="text-[9px] font-mono text-purple-200 bg-purple-500/10 border border-purple-400/20 px-3 py-1 rounded-full uppercase tracking-[0.35em]">
+                  FOUNDATION LAYER
+                </span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-5 rounded-2xl border border-white/10 bg-black/35">
+                  <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Data</p>
+                  <p class="text-[11px] text-white/80 italic leading-relaxed">Gestión del cambio</p>
+                </div>
+                <div class="p-5 rounded-2xl border border-white/10 bg-black/35">
+                  <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Tecnología</p>
+                  <p class="text-[11px] text-white/80 italic leading-relaxed">Gobierno</p>
+                </div>
+                <div class="p-5 rounded-2xl border border-white/10 bg-black/35">
+                  <p class="text-[9px] font-mono text-white/50 uppercase tracking-widest mb-2">Procesos</p>
+                  <p class="text-[11px] text-white/80 italic leading-relaxed">Riesgos</p>
+                </div>
+              </div>
+
+              <div class="mt-6 flex justify-end">
+                <button onclick="showModule('manifiesto')" class="px-6 py-2 rounded-full border border-white/15 bg-white/10 text-white text-[10px] font-mono uppercase tracking-[0.35em] hover:bg-white/15 transition">
+                  Volver al inicio
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL: Skills -->
+  <div id="skillsModal" class="modal-overlay" aria-hidden="true" onclick="modalBackdropClose(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Skills 2030">
+      <div class="modal-topbar">
+        <div class="modal-title">SKILLS 2030 • WEF FUTURE OF JOBS 2025</div>
+        <button class="modal-close" onclick="closeSkillsModal()" aria-label="Cerrar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img src="skills2030.png" alt="Skills 2030 ampliado">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const titles = {
+      "manifiesto": "01. El Manifiesto",
+      "contexto": "02. Disrupción Musk",
+      "estrategia": "03. Los Dos Niveles",
+      "individual": "04. Productividad Individual",
+      "cadena": "05. Productividad Compañía",
+      "vp-rol": "06. Rol VP & Cimientos",
+      "resumen": "07. Resumen"
+    };
+
+    const progressPercent = {
+      "manifiesto": 12,
+      "contexto": 25,
+      "estrategia": 40,
+      "individual": 60,
+      "cadena": 80,
+      "vp-rol": 92,
+      "resumen": 100
+    };
+
+    function showModule(moduleId) {
+      document.querySelectorAll(".module-content").forEach(m => m.classList.remove("active"));
+      const targetModule = document.getElementById(`mod-${moduleId}`);
+      if (targetModule) targetModule.classList.add("active");
+      else console.error(`No existe el módulo: #mod-${moduleId}`);
+
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      const targetBtn = document.getElementById(`btn-${moduleId}`);
+      if (targetBtn) targetBtn.classList.add("active");
+      else console.warn(`No existe el botón: #btn-${moduleId} (si es un módulo sin botón, ignora)`);
+
+      const indicatorText = document.getElementById("indicator-text");
+      if (indicatorText && titles[moduleId]) indicatorText.innerText = titles[moduleId];
+
+      const percent = progressPercent[moduleId] || 0;
+      const bar = document.getElementById("progress-bar");
+      const text = document.getElementById("progress-percent");
+      if (bar) bar.style.width = `${percent}%`;
+      if (text) text.innerText = `${percent}%`;
+
+      const mainContainer = document.getElementById("main-container");
+      if (mainContainer) mainContainer.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ✅ FIX: botón "Ir al resumen" (a prueba de fallos)
+    function goToResumen() {
+      const mod = document.getElementById("mod-resumen");
+      const btn = document.getElementById("btn-resumen");
+
+      if (!mod) console.error("No existe el módulo: #mod-resumen (revisa el id del bloque Resumen)");
+      if (!btn) console.error("No existe el botón sidebar: #btn-resumen (revisa el id del botón en el menú)");
+
+      showModule("resumen");
+    }
+
+    // Modal skills
+    function openSkillsModal() {
+      const modal = document.getElementById("skillsModal");
+      if (!modal) return;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.addEventListener("keydown", escCloseSkills);
+    }
+    function closeSkillsModal() {
+      const modal = document.getElementById("skillsModal");
+      if (!modal) return;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.removeEventListener("keydown", escCloseSkills);
+    }
+    function escCloseSkills(e) {
+      if (e.key === "Escape") closeSkillsModal();
+    }
+    function modalBackdropClose(e) {
+      // si el click fue en el overlay (y no dentro de la tarjeta), cierra
+      if (e.target && e.target.id === "skillsModal") closeSkillsModal();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      showModule("manifiesto");
+      console.log("Alpina OS v7.6 Stable Core Loaded.");
+    });
+  </script>
+</body>
+</html>
+
