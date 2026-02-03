@@ -34,7 +34,7 @@
       --violet:#7C3AED;
       --danger:#FF4B4B;
       
-      /* Colores extraidos de las imagenes para la casa */
+      /* Colores extraidos de las imagenes */
       --electric-blue: #4d4dff; /* Azul Eléctrico Vibrante */
       --mint-green: #99ffcc;    /* Verde Menta Claro */
 
@@ -249,28 +249,28 @@
         box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
     }
 
-    /* BLOQUE 3: AZUL ELÉCTRICO (VIVO - De imagen) */
-    .block-electric {
-        background: rgba(77, 77, 255, 0.2); /* Fondo tintado */
-        border: 2px solid var(--electric-blue); /* Borde Sólido */
+    /* BLOQUE 3: VERDE ALPINA (VIVO) */
+    .block-green-house {
+        background: rgba(156, 193, 31, 0.15); /* Fondo suave Alpina */
+        border: 2px solid var(--alpina); /* Borde Sólido */
         color: white;
-        box-shadow: 0 0 25px rgba(77, 77, 255, 0.2);
+        box-shadow: 0 0 25px rgba(156, 193, 31, 0.2);
     }
-    .block-electric:hover { 
-        background: rgba(77, 77, 255, 0.3);
-        box-shadow: 0 0 35px rgba(77, 77, 255, 0.4); 
+    .block-green-house:hover { 
+        background: rgba(156, 193, 31, 0.25);
+        box-shadow: 0 0 35px rgba(156, 193, 31, 0.4); 
     }
 
-    /* BLOQUE 4: VERDE MENTA (VIVO - De imagen) */
+    /* BLOQUE 4: VERDE MENTA (VIVO) */
     .block-mint {
-        background: rgba(153, 255, 204, 0.15); /* Fondo tintado */
+        background: rgba(153, 255, 204, 0.1); /* Fondo suave */
         border: 2px solid var(--mint-green); /* Borde Sólido */
         color: white;
-        box-shadow: 0 0 25px rgba(153, 255, 204, 0.2);
+        box-shadow: 0 0 25px rgba(153, 255, 204, 0.15);
     }
     .block-mint:hover { 
-        background: rgba(153, 255, 204, 0.25);
-        box-shadow: 0 0 35px rgba(153, 255, 204, 0.4); 
+        background: rgba(153, 255, 204, 0.2);
+        box-shadow: 0 0 35px rgba(153, 255, 204, 0.3); 
     }
 
     .house-foundation {
@@ -303,60 +303,106 @@
         box-shadow: 0 2px 5px rgba(0,0,0,0.5);
     }
 
-    /* ===== Static Radial (SQUIRCLE/ROUNDED RECT) ===== */
-    .radial-system { 
-        position: relative; 
-        width: 100%; 
-        max-width: 900px; /* Wider for rectangular shape */
-        height: 480px; 
-        margin: 0 auto; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-    }
-    .radial-center-text { z-index: 5; }
-
-    .radial-node { 
-        position: absolute; 
-        width: 64px; 
-        height: 64px; 
-        border-radius: 50%; 
-        background: rgba(15, 23, 42, 0.8); /* Dark default */
-        border: 2px solid rgba(255,255,255,0.3); 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        z-index: 20; 
-        transition: 0.3s; 
-        cursor: pointer; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    .radial-node:hover { transform: scale(1.15); box-shadow: 0 0 20px rgba(0,245,255,0.6); }
-    .radial-node i { font-size: 22px; color: white; transition: 0.3s;}
-    
-    /* Conexiones en anillo (SVG Path for smooth curve) */
-    .ring-path-container {
-        position: absolute;
-        top: 0;
-        left: 0;
+    /* ===== LINEAR CHAIN STYLES ===== */
+    .linear-chain-container {
         width: 100%;
-        height: 100%;
-        z-index: 1; /* Behind nodes (z-20) */
-        pointer-events: none;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0;
+        padding-top: 0; 
+        padding-bottom: 20px;
+        position: relative;
+    }
+    
+    .chain-link {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        min-height: 480px;
     }
 
-    .radial-label { 
-        position: absolute; 
-        width: 140px; 
-        text-align: center; 
-        font-size: 11px; 
-        font-weight: 700; 
-        color: rgba(255,255,255,0.9); 
-        text-transform: uppercase; 
-        letter-spacing: 0.5px; 
-        text-shadow: 0 2px 4px rgba(0,0,0,0.9); 
-        pointer-events: none; 
+    /* New Vertical Card for Title */
+    .link-card-vertical {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px; /* Slim width */
+        height: 180px; /* Fixed height for title area */
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 10px;
+        margin-bottom: 2px; /* Reduced gap to icon */
+        transition: all 0.3s ease;
     }
+    .chain-link:hover .link-card-vertical {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+    }
+
+    .link-title {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.9);
+        letter-spacing: 1px;
+        white-space: nowrap;
+        text-align: center;
+    }
+    
+    .link-icon {
+        margin-top: 0; 
+        font-size: 20px;
+        opacity: 1;
+        display: block;
+        margin-bottom: 2px; /* Minimal space before bubbles start */
+    }
+
+    /* Bubbles Area */
+    .bubbles-area {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        /* margin-top applied inline via JS */
+    }
+
+    .chain-bubble {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        backdrop-filter: blur(5px);
+        z-index: 10;
+        border: 1px solid;
+    }
+
+    /* Arrow between bubbles ONLY */
+    .rise-arrow {
+        position: absolute;
+        width: 1px;
+        background: linear-gradient(to top, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+        z-index: 5;
+    }
+    .rise-arrow::after {
+        content: '';
+        position: absolute;
+        top: 0; 
+        left: -3px; 
+        width: 7px;
+        height: 7px;
+        border-top: 1px solid rgba(255,255,255,0.9);
+        border-left: 1px solid rgba(255,255,255,0.9);
+        transform: rotate(45deg);
+    }
+
     
     .equation-container {
         display: flex;
@@ -375,10 +421,7 @@
         text-align: right;
     }
     .eq-plus {
-        font-size: 40px;
-        color: var(--accent);
-        font-weight: 300;
-        opacity: 0.8;
+        /* Plus symbol style handled in HTML */
     }
     .eq-card {
         background: rgba(255,255,255,0.05);
@@ -428,7 +471,6 @@
     }
 
     @media (max-width: 1024px) {
-        .radial-system { transform: scale(0.8); margin: -50px auto; }
         .equation-container { flex-direction: column; gap: 20px; text-align: center; }
         .eq-left { align-items: center; text-align: center; }
     }
@@ -442,11 +484,11 @@
     .brand-dot{ width:8px; height:8px; border-radius:999px; }
     .dot-c{ background: var(--accent); } .dot-g{ background: var(--alpina); } .dot-v{ background: var(--violet); }
 
-    /* Modal Styles */
+    /* Modal Styles MOVED TO TOP to fix z-index issues */
     .modal-backdrop {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-        z-index: 10000;
+        z-index: 10001; /* Highest priority */
         display: flex; align-items: center; justify-content: center;
         opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
@@ -455,6 +497,7 @@
         background: #111; border: 1px solid rgba(255,255,255,0.1);
         border-radius: 24px; padding: 20px; max-width: 90vw; max-height: 90vh;
         display: flex; flex-direction: column; gap: 20px;
+        position: relative; z-index: 10002;
     }
     .modal-top { display: flex; justify-content: space-between; align-items: center; }
     .modal-x { background: none; border: none; color: white; cursor: pointer; font-size: 20px; }
@@ -465,6 +508,23 @@
 
 <body>
   <div class="scanline"></div>
+
+  <!-- MOVED MODAL HERE FOR BETTER Z-INDEX STACKING -->
+  <div id="skillsModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card">
+        <div class="modal-top">
+            <div class="brand-chip">
+                <span class="brand-dot dot-c"></span><span class="brand-dot dot-v"></span><span class="brand-dot dot-g"></span>
+                <span>WEF • Future of Jobs 2025</span>
+            </div>
+            <button class="modal-x" onclick="closeSkillsModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <!-- Modal image with explicit filename -->
+        <div class="modal-body flex justify-center items-center">
+            <img src="skills2030.png" alt="Skills Matrix 2030" style="max-height: 80vh; max-width: 100%; border-radius: 8px;">
+        </div>
+    </div>
+  </div>
 
   <!-- HEADER -->
   <header class="header">
@@ -663,14 +723,14 @@
                     </div>
                 </div>
 
-                <!-- 3. CIMIENTO 1 (Electric Blue) - Block 3 -->
-                <div class="house-foundation w-full mb-3 block-electric">
+                <!-- 3. CIMIENTO 1 (Green House) - Block 3 -->
+                <div class="house-foundation w-full mb-3 block-green-house">
                     <div class="house-number">3</div>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-blue-300"></i> Procesos</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-[#9CC11F]"></i> Procesos</span>
                     <span class="text-white/20">|</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-microchip text-blue-300"></i> Tecnología</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-microchip text-lime-300"></i> Tecnología</span>
                     <span class="text-white/20">|</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-database text-cyan-300"></i> Datos</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-database text-green-300"></i> Datos</span>
                 </div>
 
                 <!-- 4. CIMIENTO 2 (Mint Green) - Block 4 -->
@@ -683,9 +743,10 @@
                     <span class="flex items-center gap-2"><i class="fa-solid fa-users text-green-200"></i> Cultura</span>
                 </div>
             </div>
+             <div class="mt-8"><button class="pill-btn" onclick="showModule('estrategia')"><i class="fa-solid fa-arrow-left-long text-white/70"></i><span>Volver</span></button></div>
         </div>
 
-        <!-- 04. PRODUCTIVIDAD COMPAÑÍA (CIRCULAR RADIAL UPDATED) -->
+        <!-- 04. PRODUCTIVIDAD COMPAÑÍA (LINEAR CHAIN UPDATED) -->
         <div id="mod-compania" class="module-content justify-center items-center flex-col relative">
           
           <!-- MINI STRATEGY MAP (WIDGET - Left Block Active) -->
@@ -716,17 +777,14 @@
                 </div>
           </div>
 
-          <!-- Circular Chain Container -->
-          <div class="radial-system mb-12 mt-12" id="radial-system">
-            <!-- Center Text -->
-            <div class="radial-center-text absolute inset-0 flex items-center justify-center pointer-events-none">
-                <h3 class="text-2xl font-bold font-space uppercase text-center text-white/90 tracking-widest drop-shadow-[0_0_15px_rgba(0,0,0,1)]">
+          <!-- Linear Chain Container (Horizontal Scroll) -->
+          <div class="w-full max-w-7xl mt-10 mb-2 px-4"> <!-- Adjusted margin top from 20 to 10 for better position -->
+              <h3 class="text-2xl font-bold font-space uppercase text-center text-white/90 tracking-widest drop-shadow-[0_0_15px_rgba(0,0,0,1)] mb-14"> <!-- Increased margin bottom for title separation -->
                     Cadena de<br><span class="text-[#9CC11F]">Valor Alpina</span>
-                </h3>
-            </div>
-            
-            <!-- SVG Container for continuous line -->
-            <div id="ring-path-container" class="ring-path-container"></div>
+              </h3>
+              <div id="linear-chain-container" class="linear-chain-container">
+                  <!-- Nodes inserted by JS -->
+              </div>
           </div>
           
           <!-- New Section: Projects + Initiatives + Tech/Data -->
@@ -734,21 +792,20 @@
               <!-- Left Side -->
               <div class="eq-left flex flex-col gap-4 text-right md:items-end items-center">
                   <div class="group cursor-default">
-                      <span class="text-sm font-mono text-cyan-400 mb-1 block">ELEMENTO 01</span>
-                      <h3 class="text-3xl md:text-4xl font-bold text-white uppercase tracking-widest font-space group-hover:text-cyan-300 transition-colors">Proyectos<br>Transformación</h3>
+                      <span class="text-xs font-mono text-cyan-400 mb-1 block">ELEMENTO 01</span>
+                      <h3 class="text-xl md:text-xl font-bold text-white uppercase tracking-widest font-space group-hover:text-cyan-300 transition-colors">Proyectos<br>Transformación</h3> <!-- Reduced Font Size -->
                   </div>
-                  <div class="h-px w-32 bg-white/20 my-2"></div>
+                  <div class="h-px w-24 bg-white/20 my-2"></div>
                   <div class="group cursor-default">
-                      <span class="text-sm font-mono text-[#9CC11F] mb-1 block">ELEMENTO 02</span>
-                      <h3 class="text-3xl md:text-4xl font-bold text-white uppercase tracking-widest font-space group-hover:text-[#cfe88a] transition-colors">Iniciativas</h3>
+                      <span class="text-xs font-mono text-[#9CC11F] mb-1 block">ELEMENTO 02</span>
+                      <h3 class="text-xl md:text-xl font-bold text-white uppercase tracking-widest font-space group-hover:text-[#cfe88a] transition-colors">Iniciativas</h3> <!-- Reduced Font Size -->
                   </div>
               </div>
 
               <!-- Center Plus -->
               <div class="eq-plus flex justify-center">
-                  <div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center bg-white/5 backdrop-blur-md">
-                    <i class="fa-solid fa-plus text-3xl text-white/70"></i>
-                  </div>
+                  <!-- Updated Plus Sign Style -->
+                  <i class="fa-solid fa-plus text-5xl text-[#9CC11F] drop-shadow-[0_0_15px_rgba(156,193,31,0.6)]"></i>
               </div>
 
               <!-- Right Card (Highlighted) -->
@@ -821,7 +878,6 @@
                 <div class="absolute w-[340px] h-[340px] border border-white/5 rounded-full animate-spin-slow pointer-events-none"></div>
 
                 <!-- Satellite Items -->
-                <!-- Positioning logic for circle (Radius 170px) -->
                 
                 <!-- 1. Top Left -->
                 <div class="orbit-item left-side" style="top: 25%; left: 21%; transform: translate(-50%, -50%);">
@@ -898,17 +954,17 @@
                     </div>
                 </div>
 
-                <!-- 3. CIMIENTO 1 (Electric Blue) -->
-                <div class="house-foundation w-full mb-3 block-electric">
+                <!-- 3. CIMIENTO 1 (Green House) - Block 3 -->
+                <div class="house-foundation w-full mb-3 block-green-house">
                     <div class="house-number">3</div>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-blue-300"></i> Procesos</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-[#9CC11F]"></i> Procesos</span>
                     <span class="text-white/20">|</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-microchip text-blue-300"></i> Tecnología</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-microchip text-lime-300"></i> Tecnología</span>
                     <span class="text-white/20">|</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-database text-cyan-300"></i> Datos</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-database text-green-300"></i> Datos</span>
                 </div>
 
-                <!-- 4. CIMIENTO 2 (Mint Green) -->
+                <!-- 4. CIMIENTO 2 (Mint Green) - Block 4 -->
                 <div class="house-foundation w-full block-mint">
                     <div class="house-number">4</div>
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-teal-200"></i> Gobierno</span>
@@ -942,190 +998,77 @@
 
   const valueChainData = [
     { title: "Planeación", icon: "fa-chart-pie", color: "text-cyan-400", borderColor: "border-cyan-400", number: "1" },
-    { title: "Abastecimiento", icon: "fa-truck-field", color: "text-purple-400", borderColor: "border-purple-400", number: "2" },
+    { title: "Abastecimiento", icon: "fa-truck-field", color: "text-teal-400", borderColor: "border-teal-400", number: "2" },
     { title: "Manufactura", icon: "fa-industry", color: "text-[#9CC11F]", borderColor: "border-[#9CC11F]", number: "3" },
     { title: "Op. Bajo Techo", icon: "fa-warehouse", color: "text-white", borderColor: "border-white", number: "4" },
     { title: "Distribución", icon: "fa-route", color: "text-cyan-400", borderColor: "border-cyan-400", number: "5" },
-    { title: "Comercial", icon: "fa-shop", color: "text-purple-400", borderColor: "border-purple-400", number: "6" },
+    { title: "Comercial", icon: "fa-shop", color: "text-teal-400", borderColor: "border-teal-400", number: "6" },
     { title: "Mercadeo", icon: "fa-bullhorn", color: "text-[#9CC11F]", borderColor: "border-[#9CC11F]", number: "7" },
     { title: "Innovación", icon: "fa-lightbulb", color: "text-white", borderColor: "border-white", number: "8" },
     { title: "Transformación", icon: "fa-rocket", color: "text-cyan-400", borderColor: "border-cyan-400", number: "9" },
-    { title: "Finanzas", icon: "fa-chart-line", color: "text-purple-400", borderColor: "border-purple-400", number: "10" },
+    { title: "Finanzas", icon: "fa-chart-line", color: "text-teal-400", borderColor: "border-teal-400", number: "10" },
     { title: "Talento", icon: "fa-users", color: "text-[#9CC11F]", borderColor: "border-[#9CC11F]", number: "11" },
     { title: "Servicios Corp.", icon: "fa-headset", color: "text-white", borderColor: "border-white", number: "12" }
   ];
 
   function renderStaticChain() {
-    const container = document.getElementById('radial-system');
+    const container = document.getElementById('linear-chain-container');
     if(!container) return;
-    const existing = container.querySelectorAll('.radial-node, .radial-label, .ring-connection, .ring-arrow, svg');
-    existing.forEach(e => e.remove());
-
-    const width = 800; // Match CSS max-width
-    const height = 450; // Match CSS height
-    const total = valueChainData.length;
     
-    // Function to get point on rounded rect path based on t (0 to 1)
-    // Using simple traversal logic for "stadium" or "rounded rect" perimeter
-    function getPointOnRect(t) {
-        // Path logic: Top(R->L) -> LeftArc -> Bot(L->R) -> RightArc (Clockwise starting top center? No, usually start Top Right or Top Center)
-        // Let's define perimeter.
-        // Dimensions of the "pill" rect
-        const rectW = 600;
-        const rectH = 340;
-        const r = 140; // Corner radius
-        
-        // Straight segment lengths
-        const straightW = rectW - 2 * r; // Top/Bot straight part
-        const straightH = rectH - 2 * r; // Left/Right straight part
-        
-        // Perimeter
-        const perimeter = (2 * straightW) + (2 * straightH) + (2 * Math.PI * r);
-        
-        let d = t * perimeter;
-        
-        // Start top-center, go clockwise
-        // Top Center is at x=0 (relative to center), y=-rectH/2
-        // Seg 1: Top Right Straight (length straightW/2)
-        // Seg 2: Top Right Corner (length PI*r/2)
-        // Seg 3: Right Straight (length straightH)
-        // Seg 4: Bot Right Corner (length PI*r/2)
-        // Seg 5: Bot Straight (length straightW)
-        // Seg 6: Bot Left Corner (length PI*r/2)
-        // Seg 7: Left Straight (length straightH)
-        // Seg 8: Top Left Corner (length PI*r/2)
-        // Seg 9: Top Left Straight (length straightW/2)
-        
-        // Simplified mapping logic relative to center (0,0)
-        let x = 0, y = 0;
-        
-        const halfSW = straightW / 2;
-        const halfSH = straightH / 2;
-        const arcLen = (Math.PI * r) / 2;
-        
-        if (d < halfSW) { // Top right straight
-             x = d; y = -rectH/2;
-        } else if (d < halfSW + arcLen) { // TR Corner
-             const angle = ((d - halfSW) / arcLen) * (Math.PI/2) - (Math.PI/2); // -90 to 0
-             x = halfSW + r * Math.cos(angle);
-             y = -halfSH + r * Math.sin(angle); // y is up negative
-        } else if (d < halfSW + arcLen + straightH) { // Right straight
-             x = rectW/2;
-             y = -halfSH + (d - (halfSW + arcLen));
-        } else if (d < halfSW + arcLen + straightH + arcLen) { // BR Corner
-             const angle = ((d - (halfSW + arcLen + straightH)) / arcLen) * (Math.PI/2); // 0 to 90
-             x = halfSW + r * Math.cos(angle);
-             y = halfSH + r * Math.sin(angle);
-        } else if (d < halfSW + arcLen + straightH + arcLen + straightW) { // Bottom straight
-             x = halfSW - (d - (halfSW + arcLen + straightH + arcLen));
-             y = rectH/2;
-        } else if (d < halfSW + arcLen + straightH + arcLen + straightW + arcLen) { // BL Corner
-             const angle = ((d - (halfSW + arcLen + straightH + arcLen + straightW)) / arcLen) * (Math.PI/2) + (Math.PI/2); // 90 to 180
-             x = -halfSW + r * Math.cos(angle);
-             y = halfSH + r * Math.sin(angle);
-        } else if (d < halfSW + arcLen + straightH + arcLen + straightW + arcLen + straightH) { // Left straight
-             x = -rectW/2;
-             y = halfSH - (d - (halfSW + arcLen + straightH + arcLen + straightW + arcLen));
-        } else if (d < halfSW + arcLen + straightH + arcLen + straightW + arcLen + straightH + arcLen) { // TL Corner
-             const angle = ((d - (halfSW + arcLen + straightH + arcLen + straightW + arcLen + straightH)) / arcLen) * (Math.PI/2) + Math.PI; // 180 to 270
-             x = -halfSW + r * Math.cos(angle);
-             y = -halfSH + r * Math.sin(angle);
-        } else { // Top left straight (back to center)
-             x = -halfSW + (d - (halfSW + arcLen + straightH + arcLen + straightW + arcLen + straightH + arcLen));
-             y = -rectH/2;
-        }
-        
-        // Translate to container center
-        return { x: x + width/2, y: y + height/2 };
-    }
+    // Clear previous content
+    container.innerHTML = '';
 
-    // 1. Create Continuous SVG Path
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("width", "100%");
-    svg.setAttribute("height", "100%");
-    svg.style.position = "absolute";
-    svg.style.top = "0";
-    svg.style.left = "0";
-    svg.style.zIndex = "1";
-    svg.style.pointerEvents = "none";
-    
-    // Sample points for path
-    let d = "";
-    const samples = 200; // High resolution for smoothness
-    for(let i=0; i<=samples; i++) {
-        const t = i / samples;
-        const p = getPointOnRect(t);
-        if(i===0) d += `M ${p.x} ${p.y}`;
-        else d += ` L ${p.x} ${p.y}`;
-    }
-    d += " Z"; // Close the path
-    
-    const path = document.createElementNS(svgNS, "path");
-    path.setAttribute("d", d);
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "rgba(255,255,255,0.2)");
-    path.setAttribute("stroke-width", "2");
-    
-    svg.appendChild(path);
-    container.appendChild(svg);
-
-
-    // 2. Create Nodes on top (No lines here)
     valueChainData.forEach((item, index) => {
-      const t = index / total;
-      const p = getPointOnRect(t);
-
-      const node = document.createElement('div');
-      node.className = 'radial-node';
       
-      // Determine border color hex for background tint
-      let borderColor = 'rgba(255,255,255,0.5)';
-      let bgColor = 'rgba(30, 41, 59, 0.9)'; // Default dark
+      // Determine colors
+      let iconColorClass = item.color;
+      let borderColorClass = item.borderColor;
       
-      if(item.color.includes('cyan')) {
-         borderColor = 'var(--accent)';
-         bgColor = 'rgba(0, 245, 255, 0.2)';
-      } else if (item.color.includes('purple')) {
-         borderColor = 'var(--accent2)';
-         bgColor = 'rgba(106, 0, 255, 0.2)';
-      } else if (item.color.includes('#9CC11F')) {
-         borderColor = 'var(--alpina)';
-         bgColor = 'rgba(156, 193, 31, 0.2)';
-      }
+      // Fallback for hex values if not standard tailwind
+      // Using vivid Teal instead of Emerald/Mint, with high opacity
+      let bubbleBg = "bg-white/70";
+      if(item.color.includes('cyan')) bubbleBg = "bg-cyan-500/70";
+      if(item.color.includes('teal')) bubbleBg = "bg-teal-500/70";
+      if(item.color.includes('#9CC11F')) bubbleBg = "bg-[#9CC11F]/70";
 
-      node.style.borderColor = borderColor;
-      node.style.backgroundColor = bgColor;
-
-      node.style.left = (p.x - 32) + "px"; 
-      node.style.top = (p.y - 32) + "px";
+      // Random vertical offset for organic look
+      // Between 0px and 60px
+      const randomTop = Math.floor(Math.random() * 40); 
       
-      // Node content with NO NUMBER
-      node.innerHTML = `
-        <div class="relative w-full h-full flex items-center justify-center">
-            <i class="fa-solid ${item.icon} ${item.color.replace('text-', '')}"></i>
+      // Increased dynamic distance between balls
+      const arrowHeight = 80; 
+      
+      const linkHtml = `
+        <div class="chain-link group">
+            
+            <div class="flex flex-col items-center mb-1">
+                 <!-- Vertical Title Card -->
+                <div class="link-card-vertical ${item.borderColor.replace('border', 'border')}">
+                    <span class="link-title ${item.color}">${item.title}</span>
+                </div>
+                 <!-- Icon Below Card -->
+                <i class="fa-solid ${item.icon} ${item.color} link-icon"></i>
+            </div>
+            
+            <!-- Bubbles & Arrow Container -->
+            <div class="bubbles-area" style="margin-top: ${randomTop}px;">
+                
+                <!-- Bottom Ball (Current State) -->
+                <div class="chain-bubble w-8 h-8 bottom-0 left-[calc(50%-16px)] ${bubbleBg} ${item.borderColor.replace('border', 'border-2')} z-10">
+                </div>
+                
+                <!-- Arrow (Upward between balls) -->
+                <div class="rise-arrow" style="height: ${arrowHeight}px; bottom: 32px; left: 50%;"></div>
+                
+                <!-- Top Ball (Future State) -->
+                <div class="chain-bubble w-10 h-10 bottom-[${arrowHeight + 32}px] left-[calc(50%-20px)] ${bubbleBg} ${item.borderColor.replace('border', 'border-2')} z-10">
+                </div>
+                
+            </div>
         </div>
       `;
-      container.appendChild(node);
-
-      const label = document.createElement('div');
-      label.className = 'radial-label';
-      label.innerText = item.title;
       
-      // Calculate label position radiating outward from center
-      const centerX = width/2;
-      const centerY = height/2;
-      const dx = p.x - centerX;
-      const dy = p.y - centerY;
-      // Normalize and scale
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const labelDist = 60; 
-      const lx = p.x + (dx/dist) * labelDist;
-      const ly = p.y + (dy/dist) * labelDist;
-      
-      label.style.left = (lx - 70) + "px"; 
-      label.style.top = (ly - 8) + "px";
-      container.appendChild(label);
+      container.insertAdjacentHTML('beforeend', linkHtml);
     });
   }
 
