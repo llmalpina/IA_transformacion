@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Alpina OS v10.4 | Connected Chain & Hero</title>
+  <title>Alpina OS v11.1 | Final Corrected</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@200;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -15,10 +15,10 @@
       --muted:rgba(234,242,255,.72);
       --glass:rgba(0,0,0,.65);
       --stroke:rgba(255,255,255,.12);
-      --accent:#00F5FF;
-      --accent2:#6A00FF;
-      --alpina:#9CC11F;
-      --violet:#7C3AED;
+      --accent:#00F5FF;      /* Cyan */
+      --accent2:#6A00FF;     /* Purple */
+      --alpina:#9CC11F;      /* Verde */
+      --danger:#FF4B4B;      /* Rojo */
     }
 
     html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);}
@@ -31,51 +31,22 @@
       font-family:'Inter',sans-serif;
     }
 
-    /* ===== Header Fijo ===== */
-    .header{
-      position:fixed;top:18px;left:18px;right:18px;z-index:9999;
-      display:flex;align-items:center;gap:18px;
-      pointer-events:none;
-    }
-
-    .logo-container{
-      display:flex;align-items:center;gap:10px;
-      background:transparent;
-      padding:0;
-      border-radius:0;
-      box-shadow:none;
-      pointer-events:auto;
-    }
-    .logo{
-      height:44px; width:auto;
-      filter: drop-shadow(0 12px 26px rgba(0,0,0,.55));
-    }
+    /* ===== Header ===== */
+    .header{ position:fixed;top:18px;left:18px;right:18px;z-index:9999; display:flex;align-items:center;gap:18px; pointer-events:none; }
+    .logo-container{ display:flex;align-items:center;gap:10px; background:transparent; padding:0; pointer-events:auto; }
+    .logo{ height:44px; width:auto; filter: drop-shadow(0 12px 26px rgba(0,0,0,.55)); }
 
     /* ===== UI Components ===== */
     .glass-panel{
-      background:var(--glass);
-      backdrop-filter: blur(40px);
-      border:1px solid var(--stroke);
-      border-radius:32px;
+      background:var(--glass); backdrop-filter: blur(40px);
+      border:1px solid var(--stroke); border-radius:32px;
     }
 
-    .module-content{
-      display:none;
-      min-height:100%;
-      flex-direction:column;
-      animation: slideUp .5s cubic-bezier(.2,.8,.2,1) forwards;
-    }
+    .module-content{ display:none; min-height:100%; flex-direction:column; animation: slideUp .5s cubic-bezier(.2,.8,.2,1) forwards; }
     .module-content.active{display:flex;}
-    @keyframes slideUp{
-      from{opacity:0;transform:translateY(20px);}
-      to{opacity:1;transform:translateY(0);}
-    }
+    @keyframes slideUp{ from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
 
-    .nav-btn{
-      transition: all .25s ease;
-      border-left: 3px solid transparent;
-      cursor:pointer;
-    }
+    .nav-btn{ transition: all .25s ease; border-left: 3px solid transparent; cursor:pointer; }
     .nav-btn:hover{background: rgba(255,255,255,.05);}
     .nav-btn.active{
       border-left:3px solid var(--alpina);
@@ -89,143 +60,87 @@
     .custom-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.02);border-radius:10px;}
     .custom-scroll::-webkit-scrollbar-thumb{background:linear-gradient(var(--accent),var(--accent2));border-radius:10px;}
 
-    .scanline{
-      width:100%;height:2px;background:rgba(0,245,255,.05);
-      position:absolute;top:0;left:0;z-index:100;
-      pointer-events:none;animation: scan 4s linear infinite;
-    }
+    .scanline{ width:100%;height:2px;background:rgba(0,245,255,.05); position:absolute;top:0;left:0;z-index:100; pointer-events:none;animation: scan 4s linear infinite; }
     @keyframes scan{0%{top:0;}100%{top:100%;}}
 
     .highlight-text{color:var(--accent);font-weight:600;}
-    .manifesto-title{
-      background: linear-gradient(90deg,#fff,var(--alpina));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
-
+    .manifesto-title{ background: linear-gradient(90deg,#fff,var(--alpina)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     #module-indicator{pointer-events:auto;}
 
     /* ===== Data Cards ===== */
-    .data-card {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 1.5rem;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: 0.3s;
+    .data-card { display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; }
+    .data-card:hover { background: rgba(255,255,255,0.06); border-color: var(--accent); }
+    .big-stat { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 2.5rem; line-height: 1; margin-bottom: 0.5rem; }
+
+    /* ===== Para Que Cards ===== */
+    .paraque-card { height: 100%; padding: 40px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; background: rgba(0,0,0,0.4); }
+    .paraque-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .card-no { border-top: 4px solid var(--danger); background: linear-gradient(180deg, rgba(255, 75, 75, 0.05), rgba(0,0,0,0.6)); }
+    .card-si { border-top: 4px solid var(--alpina); background: linear-gradient(180deg, rgba(156, 193, 31, 0.05), rgba(0,0,0,0.6)); }
+
+    /* ===== STRATEGY HOUSE STYLES ===== */
+    .house-block {
+        border-radius: 20px;
+        padding: 24px;
+        border: 1px solid rgba(255,255,255,0.1);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        transition: 0.3s ease;
+        position: relative; overflow: hidden;
+        cursor: pointer;
     }
-    .data-card:hover {
-      background: rgba(255,255,255,0.06);
-      border-color: var(--accent);
-    }
-    .big-stat {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 2.5rem;
-      line-height: 1;
-      margin-bottom: 0.5rem;
+    .house-block:hover { transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+    
+    .block-blue { background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(0, 245, 255, 0.02)); border-color: rgba(0, 245, 255, 0.3); }
+    .block-blue:hover { border-color: var(--accent); }
+
+    .block-purple { background: linear-gradient(135deg, rgba(106, 0, 255, 0.1), rgba(106, 0, 255, 0.02)); border-color: rgba(106, 0, 255, 0.3); }
+    .block-purple:hover { border-color: var(--accent2); }
+
+    .house-foundation {
+        border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: center; gap: 40px;
+        font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 14px;
     }
 
-    /* ===== Brand blocks ===== */
-    .brand-block{
-      position:relative;
-      border-radius:28px;
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35));
-      overflow:hidden;
-    }
-    .brand-block::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(600px 200px at 15% 0%, rgba(0,245,255,.18), transparent 60%),
-                  radial-gradient(600px 200px at 85% 100%, rgba(124,58,237,.18), transparent 60%);
-      z-index:0;
-      filter: blur(0px);
-      opacity:.9;
-      pointer-events:none;
-    }
-    .brand-block > *{ position:relative; z-index:1; }
-
-    .brand-chip{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.30);
-      backdrop-filter: blur(18px);
-      font-family: "Fira Code", monospace;
-      font-size: 10px;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: rgba(234,242,255,.75);
-    }
-    .brand-dot{ width:8px; height:8px; border-radius:999px; }
-    .dot-c{ background: var(--accent); box-shadow: 0 0 14px rgba(0,245,255,.45); }
-    .dot-v{ background: var(--violet); box-shadow: 0 0 14px rgba(124,58,237,.45); }
-    .dot-g{ background: var(--alpina); box-shadow: 0 0 14px rgba(156,193,31,.35); }
-
-    .pill-btn{
-      pointer-events:auto;
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.25);
-      backdrop-filter: blur(16px);
-      font-size:10px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      transition: transform .2s ease, background .2s ease;
-    }
-    .pill-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); }
-
-    /* ===== Modal for skills image ===== */
-    .modal-backdrop{
-      position:fixed; inset:0; z-index:99999;
-      display:none;
-      align-items:center; justify-content:center;
-      background: rgba(0,0,0,.62);
-      backdrop-filter: blur(10px);
-      padding:24px;
-    }
-    .modal-backdrop.open{ display:flex; }
-    .modal-card{
-      width:min(1100px, 96vw);
-      max-height: 88vh;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.65);
-      box-shadow: 0 30px 80px rgba(0,0,0,.65);
-      overflow:hidden;
-      position:relative;
-    }
-    .modal-top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 16px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.35);
-    }
-    .modal-x{
-      width:36px;height:36px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.85);
-      cursor:pointer;
-    }
-    .modal-body{
-      padding:14px;
-      overflow:auto;
-      max-height: calc(88vh - 58px);
-    }
-    .modal-body img{
-      width:100%;
-      height:auto;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
+    .foundation-mid {
+        background: linear-gradient(90deg, rgba(0, 245, 255, 0.15), rgba(106, 0, 255, 0.15));
+        border: 1px solid rgba(255,255,255,0.15); color: white;
     }
 
-    /* ===== New Value Chain Styles ===== */
+    .foundation-base {
+        background: linear-gradient(90deg, #111, #1a1a1a);
+        border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); font-size: 12px;
+    }
+
+    /* Roof Style */
+    .roof-container {
+        position: relative; width: 100%; height: 80px;
+        display: flex; align-items: flex-end; justify-content: center;
+        margin-bottom: 5px;
+    }
+    .roof-svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .roof-title {
+        position: absolute; bottom: 10px; 
+        font-family: 'Space Grotesk'; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--accent);
+        text-shadow: 0 0 20px rgba(0,245,255,0.5); z-index: 2;
+    }
+
+    /* ===== Static Radial ===== */
+    .radial-system { position: relative; width: 650px; height: 650px; margin: 0 auto; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
+    .radial-center { position: absolute; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(156,193,31,0.1), rgba(0,0,0,0.9)); border: 2px solid var(--alpina); box-shadow: 0 0 60px rgba(156,193,31,0.25); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; }
+    .radial-node { position: absolute; width: 60px; height: 60px; border-radius: 50%; background: #000; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; z-index: 20; transition: 0.3s; cursor: pointer; }
+    .radial-node:hover { transform: scale(1.15); border-color: var(--accent); background: rgba(0,245,255,0.1); box-shadow: 0 0 20px rgba(0,245,255,0.4); }
+    .radial-node i { font-size: 20px; color: white; }
+    .radial-node:hover i { color: var(--accent); }
+    .connector-line { position: absolute; top: 50%; left: 50%; height: 1px; background: rgba(255,255,255,0.15); transform-origin: 0 0; z-index: 1; }
+    .radial-label { position: absolute; width: 140px; text-align: center; font-size: 10px; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); pointer-events: none; }
+    
+    /* Integration Flow Styles */
+    .integration-box { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; border-left: 4px solid var(--accent2); display: flex; align-items: center; justify-content: space-between; transition: 0.3s; }
+    .big-core-box { background: linear-gradient(135deg, rgba(156,193,31,0.15), rgba(156,193,31,0.05)); border: 1px solid var(--alpina); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 0 40px rgba(156,193,31,0.1); height: 100%; }
+    .flow-arrow { font-size: 24px; color: var(--muted); animation: pulse-arrow 2s infinite; }
+    @keyframes pulse-arrow { 0% { opacity: 0.3; transform: translateX(0); } 50% { opacity: 1; transform: translateX(5px); } 100% { opacity: 0.3; transform: translateX(0); } }
+
+    /* ===== Circular Chain Styles ===== */
     .chain-item {
         position: relative;
         background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
@@ -257,7 +172,6 @@
             0 0 30px rgba(156,193,31,0.4);
     }
     
-    /* Circular path background */
     #chainGrid::before {
         content: "";
         position: absolute;
@@ -280,31 +194,9 @@
         to { transform: translate(-50%, -50%) rotate(360deg); }
     }
     
-    /* Remove old connector styles for circular layout */
     .chain-item::before,
     .chain-item::after {
         display: none;
-    }
-
-    /* SVG Path Overlay */
-    .chain-path-svg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
-    }
-
-    #chainPath {
-        filter: drop-shadow(0 0 12px rgba(156,193,31,0.6));
-        animation: pathPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes pathPulse {
-        0%, 100% { opacity: 0.8; }
-        50% { opacity: 0; }
     }
 
     .chain-number {
@@ -318,14 +210,6 @@
         font-weight: 700;
         text-transform: uppercase;
         line-height: 1.1;
-    }
-    .connector {
-        position: absolute;
-        top: 50%;
-        right: -10px;
-        width: 10px;
-        height: 1px;
-        background: rgba(255,255,255,0.2);
     }
     .integration-card {
         background: rgba(255,255,255,0.05);
@@ -344,57 +228,33 @@
         text-align: center;
         box-shadow: 0 0 40px rgba(156,193,31,0.1);
     }
-    .flow-arrow {
-        font-size: 24px;
-        color: var(--muted);
-        animation: pulse-arrow 2s infinite;
-    }
-    @keyframes pulse-arrow {
-        0% { opacity: 0.3; transform: translateX(0); }
-        50% { opacity: 1; transform: translateX(5px); }
-        100% { opacity: 0.3; transform: translateX(0); }
-    }
+
+    .pill-btn{ pointer-events:auto; display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.25); backdrop-filter: blur(16px); font-size:10px; letter-spacing:.22em; text-transform:uppercase; transition: transform .2s ease, background .2s ease; }
+    .pill-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); }
+
+    .image-wrapper { border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background: black; }
+    .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-chip{ display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.30); font-family: "Fira Code", monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: rgba(234,242,255,.75); }
+    .brand-dot{ width:8px; height:8px; border-radius:999px; }
+    .dot-c{ background: var(--accent); } .dot-g{ background: var(--alpina); } .dot-v{ background: var(--violet); }
   </style>
 </head>
 
 <body>
   <div class="scanline"></div>
 
-  <!-- Modal (skills image) -->
-  <div id="skillsModal" class="modal-backdrop" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-top">
-        <div class="brand-chip">
-          <span class="brand-dot dot-c"></span>
-          <span class="brand-dot dot-v"></span>
-          <span class="brand-dot dot-g"></span>
-          <span>WEF • Future of Jobs 2025 • Figura 3.7</span>
-        </div>
-        <button class="modal-x" onclick="closeSkillsModal()" aria-label="Cerrar">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <img src="skills2030.png" alt="Figura 3.7 - Skills 2030 (WEF Future of Jobs 2025)">
-      </div>
-    </div>
-  </div>
-
   <!-- HEADER -->
   <header class="header">
     <div class="logo-container">
       <img src="LOGO%20375.png" alt="Alpina" class="logo">
     </div>
-
-    <!-- MODULE INDICATOR -->
     <div id="module-indicator" class="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-black/30 backdrop-blur-xl">
       <span class="text-[8px] font-mono text-cyan-400 tracking-[0.25em]">MODULE</span>
       <span id="indicator-text" class="text-[10px] font-bold uppercase tracking-widest text-white/80 italic">01. Contexto Disruptivo</span>
     </div>
-
     <div class="hidden md:block ml-auto pr-4 text-right pointer-events-auto">
-      <p class="text-[8px] font-mono text-cyan-400 opacity-60 tracking-widest uppercase">Orchestration OS v10.4</p>
-      <p class="text-[7px] text-gray-500 font-mono">STATUS: CHAIN CONNECTED</p>
+      <p class="text-[8px] font-mono text-cyan-400 opacity-60 tracking-widest uppercase">Orchestration OS v11.1</p>
+      <p class="text-[7px] text-gray-500 font-mono">STATUS: FINAL CORRECTED</p>
     </div>
   </header>
 
@@ -404,44 +264,33 @@
     <aside class="w-80 flex flex-col gap-4 h-full z-10">
       <nav class="flex-grow flex flex-col gap-2 overflow-y-auto custom-scroll pr-2">
         <button onclick="showModule('contexto')" id="btn-contexto" class="nav-btn active glass-panel p-4 text-left flex items-center gap-4">
-          <i class="fa-solid fa-earth-americas text-xs opacity-50 transition"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest transition">01. Contexto Disruptivo</span>
+          <i class="fa-solid fa-earth-americas text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">01. Contexto Disruptivo</span>
         </button>
-
+        <button onclick="showModule('paraque')" id="btn-paraque" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-circle-question text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">02. ¿Para qué?</span>
+        </button>
+        <button onclick="showModule('cadena')" id="btn-cadena" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
+          <i class="fa-solid fa-circle-nodes text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">03. Cadena de Valor</span>
+        </button>
         <button onclick="showModule('estrategia')" id="btn-estrategia" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
-          <i class="fa-solid fa-layer-group text-xs opacity-50 transition"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest transition">02. Los Dos Frentes</span>
+          <i class="fa-solid fa-layer-group text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">04. Estrategia (La Casa)</span>
         </button>
-
         <button onclick="showModule('compania')" id="btn-compania" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
-          <i class="fa-solid fa-link text-xs opacity-50 transition"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest transition">03. Prod. Compañía</span>
+          <i class="fa-solid fa-link text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">05. Prod. Compañía</span>
         </button>
-
         <button onclick="showModule('individual')" id="btn-individual" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
-          <i class="fa-solid fa-brain text-xs opacity-50 transition"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest transition">04. Prod. Individual</span>
+          <i class="fa-solid fa-brain text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">06. Prod. Individual</span>
         </button>
-
         <button onclick="showModule('vp-rol')" id="btn-vp-rol" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
-          <i class="fa-solid fa-shield-halved text-xs opacity-50 transition"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest transition">05. Rol VP & Cimientos</span>
+          <i class="fa-solid fa-shield-halved text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">07. Rol VP & Cimientos</span>
         </button>
-
         <button onclick="showModule('resumen')" id="btn-resumen" class="nav-btn glass-panel p-4 text-left flex items-center gap-4">
-          <i class="fa-solid fa-star text-xs opacity-50 transition"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest transition">06. Resumen</span>
+          <i class="fa-solid fa-star text-xs opacity-50 transition"></i><span class="text-[10px] font-bold uppercase tracking-widest transition">08. Resumen</span>
         </button>
       </nav>
-
       <div class="glass-panel p-6 border-t-2 border-[#9CC11F]/40">
-        <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mb-2">
-          <span>PROGRESSION</span>
-          <span class="text-cyan-400 font-bold animate-pulse" id="progress-percent">16%</span>
-        </div>
-        <div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
-          <div id="progress-bar" class="bg-gradient-to-r from-cyan-400 to-[#9CC11F] h-full w-[16%] transition-all duration-700"></div>
-        </div>
+        <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mb-2"><span>PROGRESSION</span><span class="text-cyan-400 font-bold animate-pulse" id="progress-percent">14%</span></div>
+        <div class="w-full bg-white/5 h-1 rounded-full overflow-hidden"><div id="progress-bar" class="bg-gradient-to-r from-cyan-400 to-[#9CC11F] h-full w-[14%] transition-all duration-700"></div></div>
       </div>
     </aside>
 
@@ -449,68 +298,67 @@
     <main id="main-container" class="flex-grow glass-panel relative p-10 overflow-y-auto custom-scroll z-0">
       <div id="viewport" class="h-full">
 
-        <!-- 01. CONTEXTO DISRUPTIVO -->
+        <!-- 01. CONTEXTO (COMPLETO) -->
         <div id="mod-contexto" class="module-content active justify-center">
-          <div class="max-w-6xl w-full">
-            <h1 class="text-6xl md:text-7xl font-bold font-space leading-tight mb-12 manifesto-title uppercase">EL MUNDO ESTÁ<br>CAMBIANDO.</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="max-w-6xl w-full mx-auto">
+            <h1 class="text-5xl md:text-6xl font-bold font-space leading-tight mb-8 manifesto-title uppercase text-center">EL MUNDO ESTÁ CAMBIANDO.</h1>
+            <!-- Grid de Datos "Cocktail" (Arriba) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
               <div class="data-card border-l-4 border-cyan-400">
                 <div class="flex justify-between items-start"><span class="big-stat text-cyan-400">9k</span><i class="fa-solid fa-satellite text-white/20 text-2xl"></i></div>
-                <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">Satélites</p>
-                <p class="text-xs text-gray-400 italic">La constelación de Elon Musk redefine la velocidad global.</p>
+                <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">Satélites</p><p class="text-xs text-gray-400 italic">La constelación de Elon Musk redefine la velocidad global.</p>
               </div>
               <div class="data-card border-l-4 border-[#9CC11F]">
                  <div class="flex justify-between items-start"><span class="big-stat text-[#cfe88a]">3/4</span><i class="fa-solid fa-earth-americas text-white/20 text-2xl"></i></div>
-                <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">DEL PLANETA CONECTADO</p>
-                <p class="text-xs text-gray-400 italic">6 mil millones de personas conectadas hoy.</p>
+                <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">DEL PLANETA CONECTADO</p><p class="text-xs text-gray-400 italic">6 mil millones de personas conectadas hoy.</p>
               </div>
-               <div class="data-card border-l-4 border-purple-500">
-                <div class="flex justify-between items-start"><span class="big-stat text-purple-400">92.5M</span><i class="fa-solid fa-mobile-screen text-white/20 text-2xl"></i></div>
-               <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">Líneas Celulares</p>
-               <p class="text-xs text-gray-400 italic">Hiperconectividad total, superando la población local.</p>
-             </div>
-              <div class="data-card border-l-4 border-white">
-                <div class="flex justify-between items-start"><span class="big-stat text-white">36.8M</span><i class="fa-solid fa-users text-white/20 text-2xl"></i></div>
-               <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">Usuarios Online</p>
-               <p class="text-xs text-gray-400 italic">Personas activas en redes sociales creando ecosistemas digitales.</p>
-             </div>
-              <div class="data-card border-l-4 border-cyan-400 lg:col-span-2 bg-gradient-to-r from-cyan-900/20 to-transparent">
-                <div class="flex items-center gap-6">
-                  <div><span class="big-stat text-cyan-300">2 Días</span></div>
-                  <div class="border-l border-white/10 pl-6"><p class="text-xs uppercase tracking-widest font-bold text-white mb-1">Velocidad de Datos</p><p class="text-xs text-gray-400 italic">Hoy generamos más información en 48 horas que en toda la historia hasta el año 2000.</p></div>
+              <div class="data-card border-l-4 border-purple-500">
+                <div class="flex justify-between items-start"><span class="big-stat text-purple-400">2 Días</span><i class="fa-solid fa-server text-white/20 text-2xl"></i></div>
+                <p class="text-xs uppercase tracking-widest font-bold text-white mb-1">Velocidad de Datos</p><p class="text-xs text-gray-400 italic">Generamos más info en 48h que en toda la historia pre-2000.</p>
+              </div>
+            </div>
+            
+            <!-- SECCIÓN INFERIOR RESTAURADA (Indicadores) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-t border-white/10 pt-8 mt-8">
+                <div class="lg:col-span-5 h-[300px]"><div class="image-wrapper"><img src="indicadores.jpg" alt="Data Every Minute"></div></div>
+                <div class="lg:col-span-7 flex flex-col justify-center gap-4">
+                    <div class="p-5 glass-panel bg-white/5 border-l-4 border-cyan-400"><div class="flex items-center gap-4"><i class="fa-solid fa-user-clock text-2xl text-cyan-400"></i><div><h4 class="text-xl font-bold font-space text-white">1/3 Trabajadores</h4><p class="text-xs text-gray-300">Usa IA de forma regular >1h diaria.</p></div></div></div>
+                    <div class="p-5 glass-panel bg-white/5 border-l-4 border-[#9CC11F]"><div class="flex items-center gap-4"><i class="fa-solid fa-arrow-trend-up text-2xl text-[#9CC11F]"></i><div><h4 class="text-xl font-bold font-space text-white">+40% Productividad</h4><p class="text-xs text-gray-300">En tareas especializadas vs trabajadores sin IA.</p></div></div></div>
+                    <div class="p-5 glass-panel bg-white/5 border-l-4 border-purple-500"><div class="flex items-center gap-4"><i class="fa-solid fa-medal text-2xl text-purple-400"></i><div><h4 class="text-xl font-bold font-space text-white">#1 Top Skill 2030</h4><p class="text-xs text-gray-300">"IA & Big Data" según reporte WEF 2025.</p></div></div></div>
                 </div>
-             </div>
             </div>
           </div>
         </div>
 
-        <!-- 02. ESTRATEGIA -->
-        <div id="mod-estrategia" class="module-content justify-center text-center">
-          <h2 class="text-6xl font-bold font-space mb-16 uppercase">Estrategia en <span class="text-[#9CC11F]">Dos Niveles</span></h2>
-          <div class="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div class="glass-panel p-10 border-l-4 border-[#9CC11F] hover:bg-white/5 transition group cursor-pointer" onclick="showModule('compania')">
-              <div class="flex items-start justify-between">
-                <div><p class="text-[10px] font-mono text-white/50 uppercase tracking-[0.35em] mb-3">Front 1</p><h3 class="text-2xl font-bold uppercase tracking-widest">Productividad Compañía</h3></div>
-                <i class="fa-solid fa-link text-4xl text-[#9CC11F] group-hover:scale-110 transition"></i>
-              </div>
-              <p class="text-sm text-gray-500 leading-relaxed italic mt-5">Identificar y potenciar los procesos que mueven el negocio.</p>
+        <!-- 02. ¿PARA QUÉ? (TEXTOS CORREGIDOS) -->
+        <div id="mod-paraque" class="module-content justify-center items-center">
+            <h2 class="text-5xl md:text-6xl font-bold font-space mb-16 uppercase text-center">¿Para qué nos <span class="text-[#9CC11F]">Transformamos?</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl w-full">
+                <div class="paraque-card card-no">
+                    <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mb-6"><i class="fa-solid fa-xmark text-4xl text-red-500"></i></div>
+                    <h3 class="text-2xl font-bold uppercase mb-8 text-red-400 tracking-widest">NO ES</h3>
+                    <div class="space-y-6 w-full px-6">
+                        <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 w-full text-center"><span class="text-lg font-bold text-white uppercase">Tecnología por Moda</span></div>
+                        <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 w-full text-center"><span class="text-lg font-bold text-white uppercase">Hype Tecnológico</span></div>
+                    </div>
+                </div>
+                <div class="paraque-card card-si">
+                    <div class="w-16 h-16 rounded-full bg-[#9CC11F]/10 flex items-center justify-center mb-6"><i class="fa-solid fa-check text-4xl text-[#9CC11F]"></i></div>
+                    <h3 class="text-2xl font-bold uppercase mb-8 text-[#9CC11F] tracking-widest">SÍ ES</h3>
+                    <div class="space-y-6 w-full px-6">
+                        <div class="p-4 rounded-xl bg-[#9CC11F]/10 border border-[#9CC11F]/30 w-full text-center"><span class="text-lg font-bold text-white uppercase">Acelerar Decisiones</span></div>
+                        <div class="p-4 rounded-xl bg-[#9CC11F]/10 border border-[#9CC11F]/30 w-full text-center"><span class="text-lg font-bold text-white uppercase">Productividad & Competitividad</span></div>
+                    </div>
+                </div>
             </div>
-            <div class="glass-panel p-10 border-l-4 border-cyan-400 hover:bg-white/5 transition group cursor-pointer" onclick="showModule('individual')">
-              <div class="flex items-start justify-between">
-                <div><p class="text-[10px] font-mono text-white/50 uppercase tracking-[0.35em] mb-3">Front 2</p><h3 class="text-2xl font-bold uppercase tracking-widest">Productividad Individual</h3></div>
-                <i class="fa-solid fa-user-check text-4xl text-cyan-400 group-hover:scale-110 transition"></i>
-              </div>
-              <p class="text-sm text-gray-500 leading-relaxed italic mt-5">La IA amplificando al ser humano.</p>
-            </div>
-          </div>
         </div>
 
-        <!-- 03. PRODUCTIVIDAD COMPAÑÍA (Chain Connected) -->
-        <div id="mod-compania" class="module-content gap-10">
+        <!-- 03. CADENA DE VALOR (CIRCULAR) -->
+        <div id="mod-cadena" class="module-content gap-10">
           <div class="flex flex-col h-full justify-center max-w-7xl mx-auto">
             
             <div class="flex items-center justify-between mb-6">
-                <button class="pill-btn" onclick="showModule('estrategia')">
+                <button class="pill-btn" onclick="showModule('paraque')">
                     <i class="fa-solid fa-arrow-left-long text-white/70"></i>
                     <span>Volver</span>
                 </button>
@@ -584,193 +432,222 @@
           </div>
         </div>
 
-        <!-- 04. PRODUCTIVIDAD INDIVIDUAL (Hero Title) -->
-        <div id="mod-individual" class="module-content justify-center items-center text-center">
-            <div class="relative z-10">
-                <!-- Glow Effect behind title -->
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-cyan-500/20 blur-[100px] rounded-full pointer-events-none"></div>
-                
-                <h1 class="text-7xl md:text-9xl font-bold font-space uppercase leading-none tracking-tighter mb-6 relative">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50">Alpinista</span><br>
-                    <span class="text-[#9CC11F]">del Futuro</span>
-                </h1>
-                
-                <div class="inline-flex items-center gap-4 px-8 py-3 rounded-full border border-white/10 bg-black/40 backdrop-blur-md">
-                    <i class="fa-solid fa-bolt text-cyan-400"></i>
-                    <span class="text-xl md:text-2xl font-light text-white uppercase tracking-[0.2em] font-mono">
-                        Reinventar y Habilitar
-                    </span>
+        <!-- 04. ESTRATEGIA (LA CASA CON TECHO) -->
+        <div id="mod-estrategia" class="module-content justify-center items-center">
+            <div class="max-w-4xl w-full flex flex-col items-center">
+                <!-- Roof Container -->
+                <div class="roof-container w-full max-w-4xl mb-4">
+                    <svg width="100%" height="100%" viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <line x1="0" y1="60" x2="200" y2="0" stroke="rgba(0, 245, 255, 0.4)" stroke-width="2" />
+                        <line x1="400" y1="60" x2="200" y2="0" stroke="rgba(0, 245, 255, 0.4)" stroke-width="2" />
+                    </svg>
+                    <h2 class="roof-title">Estrategia de Transformación</h2>
+                </div>
+
+                <!-- 2 BLOQUES SUPERIORES -->
+                <div class="grid grid-cols-2 gap-4 w-full h-48 mb-3">
+                    <div class="house-block block-blue" onclick="showModule('individual')">
+                        <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center mb-3"><i class="fa-solid fa-user-check text-2xl text-cyan-400"></i></div>
+                        <h3 class="text-lg font-bold uppercase tracking-widest">Productividad Individual</h3>
+                    </div>
+                    <div class="house-block block-purple" onclick="showModule('compania')">
+                        <div class="w-12 h-12 rounded-full bg-[#6A00FF]/10 flex items-center justify-center mb-3"><i class="fa-solid fa-link text-2xl text-[#6A00FF]"></i></div>
+                        <h3 class="text-lg font-bold uppercase tracking-widest">Productividad Compañía</h3>
+                    </div>
+                </div>
+
+                <!-- CIMIENTO 1 -->
+                <div class="house-foundation foundation-mid w-full mb-3">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-purple-300"></i> Procesos</span>
+                    <span class="text-white/20">|</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-microchip text-cyan-300"></i> Tecnología</span>
+                    <span class="text-white/20">|</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-database text-blue-300"></i> Datos</span>
+                </div>
+
+                <!-- CIMIENTO 2 -->
+                <div class="house-foundation foundation-base w-full">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced"></i> Gobierno</span>
+                    <span class="text-white/20">|</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield"></i> Riesgos</span>
+                    <span class="text-white/20">|</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-users"></i> Cultura</span>
                 </div>
             </div>
         </div>
 
-        <!-- 05. ROL VP & CIMIENTOS -->
+        <!-- 04. PRODUCTIVIDAD COMPAÑÍA (CIRCULAR RADIAL STATIC + FLOW) -->
+        <div id="mod-compania" class="module-content justify-center items-center">
+           <div class="flex flex-col h-full justify-center max-w-7xl mx-auto w-full">
+             <div class="flex justify-between items-center w-full mb-8">
+                <h3 class="text-3xl font-bold font-space text-[#9CC11F] uppercase">Cadena de Valor Integrada</h3>
+                <button class="pill-btn" onclick="showModule('estrategia')"><i class="fa-solid fa-arrow-left-long text-white/70"></i><span>Volver</span></button>
+             </div>
+             
+             <!-- Grid for Radial System -->
+             <div class="relative w-full h-[600px] flex justify-center items-center">
+                 <div class="radial-system" id="radial-system">
+                    <div class="radial-center">
+                        <i class="fa-solid fa-atom text-4xl text-[#9CC11F] mb-3 animate-pulse"></i>
+                        <h3 class="text-lg font-bold uppercase leading-tight tracking-widest text-white">Cadena de<br><span class="text-[#9CC11F]">Valor Alpina</span></h3>
+                    </div>
+                  </div>
+             </div>
+
+             <!-- Integration Flow Bottom -->
+             <div class="flex flex-col md:flex-row gap-8 items-center h-full mt-8 border-t border-white/10 pt-6">
+                <div class="w-full md:w-1/3 flex flex-col gap-4">
+                    <div class="integration-box"><div class="flex flex-col"><span class="text-[10px] font-mono uppercase text-gray-400">Entrada</span><span class="text-lg font-bold text-white">Proyectos Grandes</span></div><i class="fa-solid fa-star text-white/50"></i></div>
+                    <div class="integration-box" style="border-left-color: var(--accent);"><div class="flex flex-col"><span class="text-[10px] font-mono uppercase text-gray-400">Entrada</span><span class="text-lg font-bold text-white">Iniciativas</span></div><i class="fa-solid fa-lightbulb text-white/50"></i></div>
+                </div>
+                <div class="flex flex-col gap-2 items-center justify-center"><i class="fa-solid fa-arrow-right flow-arrow text-cyan-400"></i><i class="fa-solid fa-arrow-right flow-arrow text-[#9CC11F]" style="animation-delay: 0.5s;"></i></div>
+                <div class="w-full md:w-2/3 h-full">
+                    <div class="big-core-box p-8"><h2 class="text-3xl md:text-4xl font-bold font-space text-[#9CC11F] uppercase mb-2">Procesos, Tecnología y Datos</h2><p class="text-sm font-mono text-white/60 uppercase tracking-[0.25em]">El Núcleo de la Transformación Digital</p></div>
+                </div>
+            </div>
+           </div>
+        </div>
+
+        <!-- 05. PRODUCTIVIDAD INDIVIDUAL (HERO) -->
+        <div id="mod-individual" class="module-content justify-center items-center text-center">
+            <div class="relative z-10 w-full max-w-4xl">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#9CC11F]/20 blur-[120px] -z-10 rounded-full"></div>
+                <div class="mb-10 inline-flex p-8 rounded-full border border-white/10 bg-black/40 shadow-[0_0_60px_rgba(156,193,31,0.4)] backdrop-blur-md">
+                    <i class="fa-solid fa-user-astronaut text-7xl text-white"></i>
+                </div>
+                <h1 class="text-7xl md:text-9xl font-bold font-space uppercase leading-none tracking-tighter mb-8 text-white">Alpinista<br><span class="text-[#9CC11F]">del Futuro</span></h1>
+                <div class="inline-flex items-center gap-4 px-8 py-3 rounded-full border border-white/20 bg-black/40 backdrop-blur-md">
+                    <i class="fa-solid fa-bolt text-cyan-400"></i>
+                    <span class="text-lg md:text-2xl font-light text-white uppercase tracking-[0.2em] font-mono">Reinventar y Habilitar</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06. ROL VP & CIMIENTOS -->
         <div id="mod-vp-rol" class="module-content justify-center">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center h-full">
             <div class="space-y-8">
-              <div>
-                <h2 class="text-4xl font-bold font-space uppercase italic mb-4 leading-tight">NUESTRO ROL:<br><span class="text-[#9CC11F]">CONSTRUIR CIMIENTOS</span></h2>
-                <p class="text-sm text-blue-100/50 italic leading-relaxed">Priorizar por valor, dar gobierno y asegurar que cada iniciativa tenga propósito.</p>
-              </div>
-
+              <div><h2 class="text-4xl font-bold font-space uppercase italic mb-4 leading-tight">NUESTRO ROL:<br><span class="text-[#9CC11F]">CONSTRUIR CIMIENTOS</span></h2><p class="text-sm text-blue-100/50 italic leading-relaxed">Priorizar por valor, dar gobierno y asegurar que cada iniciativa tenga propósito.</p></div>
               <div class="grid grid-cols-1 gap-3">
-                <div class="p-5 glass-panel border-l-4 border-cyan-400 flex justify-between items-center group hover:bg-white/5 transition">
-                  <span class="text-[11px] font-bold uppercase tracking-widest">Tecnología & Datos</span>
-                  <i class="fa-solid fa-server text-cyan-400 group-hover:scale-125 transition"></i>
-                </div>
-                <div class="p-5 glass-panel border-l-4 border-purple-500 flex justify-between items-center group hover:bg-white/5 transition">
-                  <span class="text-[11px] font-bold uppercase tracking-widest">Priorización por Valor</span>
-                  <i class="fa-solid fa-ranking-star text-purple-300 group-hover:scale-125 transition"></i>
-                </div>
-                <div class="p-5 glass-panel border-l-4 border-white flex justify-between items-center group hover:bg-white/5 transition">
-                  <span class="text-[11px] font-bold uppercase tracking-widest">Gobernanza de Proyectos</span>
-                  <i class="fa-solid fa-scale-balanced text-white group-hover:scale-125 transition"></i>
-                </div>
+                <div class="p-5 glass-panel border-l-4 border-cyan-400 flex justify-between items-center group hover:bg-white/5 transition"><span class="text-[11px] font-bold uppercase tracking-widest">Tecnología & Datos</span><i class="fa-solid fa-server text-cyan-400 group-hover:scale-125 transition"></i></div>
+                <div class="p-5 glass-panel border-l-4 border-purple-500 flex justify-between items-center group hover:bg-white/5 transition"><span class="text-[11px] font-bold uppercase tracking-widest">Priorización por Valor</span><i class="fa-solid fa-ranking-star text-purple-300 group-hover:scale-125 transition"></i></div>
+                <div class="p-5 glass-panel border-l-4 border-white flex justify-between items-center group hover:bg-white/5 transition"><span class="text-[11px] font-bold uppercase tracking-widest">Gobernanza</span><i class="fa-solid fa-scale-balanced text-white group-hover:scale-125 transition"></i></div>
               </div>
             </div>
-
             <div class="glass-panel p-12 text-center flex flex-col justify-center h-[500px] border-t-8 border-[#9CC11F] relative overflow-hidden">
-              <div class="absolute inset-0 bg-white/5 opacity-5 flex items-center justify-center">
-                <i class="fa-solid fa-cow text-[400px]"></i>
-              </div>
-              <h3 class="text-3xl font-bold font-space uppercase mb-4 tracking-tighter italic">¿ESTÁS LISTO PARA LIDERAR?</h3>
-              <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.4em] mb-12">Protocolo de Transformación Alpina 2026</p>
-              <div class="flex justify-center gap-3">
-                <button onclick="showModule('contexto')" class="px-8 py-3 bg-white text-black font-bold rounded-full text-[10px] uppercase tracking-widest hover:bg-[#9CC11F] transition">REINICIAR</button>
-                <button onclick="showModule('resumen')" class="px-8 py-3 bg-black/40 border border-white/10 text-white font-bold rounded-full text-[10px] uppercase tracking-widest hover:bg-white/10 transition">RESUMEN</button>
-              </div>
+                <div class="absolute inset-0 bg-white/5 opacity-5 flex items-center justify-center"><i class="fa-solid fa-cow text-[400px]"></i></div>
+                <h3 class="text-3xl font-bold font-space uppercase mb-4 tracking-tighter italic">¿ESTÁS LISTO PARA LIDERAR?</h3>
+                <p class="text-[10px] font-mono text-gray-500 uppercase tracking-[0.4em] mb-12">Protocolo de Transformación Alpina 2026</p>
+                <div class="flex justify-center gap-3"><button onclick="showModule('contexto')" class="px-8 py-3 bg-white text-black font-bold rounded-full text-[10px] uppercase tracking-widest hover:bg-[#9CC11F] transition">REINICIAR</button><button onclick="showModule('resumen')" class="px-8 py-3 bg-black/40 border border-white/10 text-white font-bold rounded-full text-[10px] uppercase tracking-widest hover:bg-white/10 transition">RESUMEN</button></div>
             </div>
           </div>
         </div>
 
-        <!-- 06. RESUMEN -->
-        <div id="mod-resumen" class="module-content gap-8">
-          <div class="flex items-center justify-between">
-            <h2 class="text-5xl font-bold font-space uppercase">Resumen de la <span class="text-[#9CC11F]">Estrategia</span></h2>
-            <button class="pill-btn" onclick="showModule('estrategia')">
-              <i class="fa-solid fa-arrow-left-long text-white/70"></i>
-              <span>Volver</span>
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="brand-block p-8">
-              <div class="flex items-center justify-between mb-6">
-                <div class="brand-chip">
-                  <span class="brand-dot dot-c"></span><span class="brand-dot dot-v"></span><span class="brand-dot dot-g"></span>
-                  <span>Productividad Individual</span>
+        <!-- 07. RESUMEN (HOUSE IDENTITY) -->
+        <div id="mod-resumen" class="module-content justify-center items-center">
+             <h2 class="text-4xl font-bold font-space uppercase mb-12 tracking-widest text-center">Resumen de la <span class="text-[#9CC11F]">Estrategia</span></h2>
+             <!-- THE SAME HOUSE STRUCTURE FOR SUMMARY -->
+             <div class="max-w-4xl w-full flex flex-col gap-3">
+                <div class="roof-container w-full max-w-4xl mb-4"><svg width="100%" height="100%" viewBox="0 0 400 60" preserveAspectRatio="none"><line x1="0" y1="60" x2="200" y2="0" stroke="rgba(0, 245, 255, 0.4)" stroke-width="2" /><line x1="400" y1="60" x2="200" y2="0" stroke="rgba(0, 245, 255, 0.4)" stroke-width="2" /></svg><h2 class="absolute bottom-4 text-3xl font-bold font-space uppercase tracking-widest text-center text-cyan-400">Estrategia de Transformación</h2></div>
+                <div class="grid grid-cols-2 gap-4 h-48">
+                    <div class="house-block block-blue">
+                        <div class="w-12 h-12 rounded-full bg-cyan-400/10 flex items-center justify-center mb-3"><i class="fa-solid fa-user-check text-2xl text-cyan-400"></i></div>
+                        <h3 class="text-lg font-bold uppercase tracking-widest">Productividad Individual</h3>
+                    </div>
+                    <div class="house-block block-purple">
+                        <div class="w-12 h-12 rounded-full bg-[#6A00FF]/10 flex items-center justify-center mb-3"><i class="fa-solid fa-link text-2xl text-[#6A00FF]"></i></div>
+                        <h3 class="text-lg font-bold uppercase tracking-widest">Productividad Compañía</h3>
+                    </div>
                 </div>
-                <i class="fa-solid fa-brain text-cyan-400 text-xl"></i>
-              </div>
-              <div class="text-white/75 text-sm leading-relaxed">
-                Definir el “Alpinista del futuro” y elevar el desempeño persona por persona con IA.
-              </div>
-            </div>
-
-            <div class="brand-block p-8">
-              <div class="flex items-center justify-between mb-6">
-                <div class="brand-chip">
-                  <span class="brand-dot dot-g"></span><span class="brand-dot dot-c"></span><span class="brand-dot dot-v"></span>
-                  <span>Productividad Compañía</span>
+                <div class="house-foundation foundation-mid">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-diagram-project text-purple-300"></i> Procesos</span><span class="text-white/20">|</span><span class="flex items-center gap-2"><i class="fa-solid fa-microchip text-cyan-300"></i> Tecnología</span><span class="text-white/20">|</span><span class="flex items-center gap-2"><i class="fa-solid fa-database text-blue-300"></i> Datos</span>
                 </div>
-                <i class="fa-solid fa-link text-[#9CC11F] text-xl"></i>
-              </div>
-              <div class="text-white/75 text-sm leading-relaxed">
-                Transformar la cadena E2E: diagnóstico, priorización y ejecución con foco en valor.
-              </div>
-            </div>
-          </div>
-
-          <!-- Cimientos en Resumen -->
-          <div class="brand-block p-8">
-            <div class="flex items-center justify-between mb-6">
-              <div class="brand-chip">
-                <span class="brand-dot dot-v"></span><span class="brand-dot dot-c"></span><span class="brand-dot dot-g"></span>
-                <span>Cimientos</span>
-              </div>
-              <div class="text-[10px] font-mono text-white/50 uppercase tracking-[0.35em]">Para usar en todas las presentaciones</div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-4">
-              <div class="glass-panel p-6 border border-white/10">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div class="p-5 rounded-2xl border border-white/10 bg-black/30 flex items-center justify-between">
-                    <div>
-                      <p class="text-[9px] font-mono text-white/40 uppercase tracking-widest">Pilar</p>
-                      <p class="text-xl font-bold mt-1">Data</p>
-                    </div>
-                    <i class="fa-solid fa-database text-cyan-400"></i>
-                  </div>
-                  <div class="p-5 rounded-2xl border border-white/10 bg-black/30 flex items-center justify-between">
-                    <div>
-                      <p class="text-[9px] font-mono text-white/40 uppercase tracking-widest">Pilar</p>
-                      <p class="text-xl font-bold mt-1">Tecnología</p>
-                    </div>
-                    <i class="fa-solid fa-microchip text-[#9CC11F]"></i>
-                  </div>
-                  <div class="p-5 rounded-2xl border border-white/10 bg-black/30 flex items-center justify-between">
-                    <div>
-                      <p class="text-[9px] font-mono text-white/40 uppercase tracking-widest">Pilar</p>
-                      <p class="text-xl font-bold mt-1">Procesos</p>
-                    </div>
-                    <i class="fa-solid fa-diagram-project text-purple-400"></i>
-                  </div>
+                <div class="house-foundation foundation-base">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced"></i> Gobierno</span><span class="text-white/20">|</span><span class="flex items-center gap-2"><i class="fa-solid fa-shield"></i> Riesgos</span><span class="text-white/20">|</span><span class="flex items-center gap-2"><i class="fa-solid fa-users"></i> Cultura</span>
                 </div>
-              </div>
-
-              <div class="glass-panel p-6 border border-white/10">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div class="p-5 rounded-2xl border border-purple-400/25 bg-purple-500/10 flex items-center justify-between">
-                    <div>
-                      <p class="text-[9px] font-mono text-white/40 uppercase tracking-widest">Capa</p>
-                      <p class="text-xl font-bold mt-1">Gestión del cambio</p>
-                    </div>
-                    <i class="fa-solid fa-people-arrows text-purple-300"></i>
-                  </div>
-                  <div class="p-5 rounded-2xl border border-cyan-400/25 bg-cyan-400/10 flex items-center justify-between">
-                    <div>
-                      <p class="text-[9px] font-mono text-white/40 uppercase tracking-widest">Capa</p>
-                      <p class="text-xl font-bold mt-1">Gobierno</p>
-                    </div>
-                    <i class="fa-solid fa-scale-balanced text-cyan-300"></i>
-                  </div>
-                  <div class="p-5 rounded-2xl border border-[#9CC11F]/25 bg-[#9CC11F]/10 flex items-center justify-between">
-                    <div>
-                      <p class="text-[9px] font-mono text-white/40 uppercase tracking-widest">Capa</p>
-                      <p class="text-xl font-bold mt-1">Riesgos</p>
-                    </div>
-                    <i class="fa-solid fa-shield text-[#cfe88a]"></i>
-                  </div>
-                </div>
-              </div>
             </div>
-
-          </div>
+             <div class="mt-8"><button class="pill-btn" onclick="showModule('estrategia')"><i class="fa-solid fa-arrow-left-long text-white/70"></i><span>Volver</span></button></div>
         </div>
+
       </div>
-
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
 <script>
   const titles = {
     "contexto": "01. Contexto Disruptivo",
-    "estrategia": "02. Los Dos Frentes",
-    "compania": "03. Prod. Compañía",
-    "individual": "04. Alpinista del Futuro",
-    "vp-rol": "05. Rol VP & Cimientos",
-    "resumen": "06. Resumen"
+    "paraque": "02. ¿Para qué?",
+    "cadena": "03. Cadena de Valor",
+    "estrategia": "04. Estrategia (La Casa)",
+    "compania": "05. Prod. Compañía",
+    "individual": "06. Prod. Individual",
+    "vp-rol": "07. Rol VP & Cimientos",
+    "resumen": "08. Resumen"
   };
 
   const progressPercent = {
-    "contexto": 16,
-    "estrategia": 33,
-    "compania": 50,
-    "individual": 66,
-    "vp-rol": 83,
-    "resumen": 100
+    "contexto": 12, "paraque": 25, "cadena": 37, "estrategia": 50,
+    "compania": 62, "individual": 75, "vp-rol": 87, "resumen": 100
   };
+
+  const valueChainData = [
+    { title: "Planeación", icon: "fa-chart-pie", color: "text-cyan-400" },
+    { title: "Abastecimiento", icon: "fa-truck-field", color: "text-purple-400" },
+    { title: "Manufactura", icon: "fa-industry", color: "text-[#9CC11F]" },
+    { title: "Op. Bajo Techo", icon: "fa-warehouse", color: "text-white" },
+    { title: "Distribución", icon: "fa-route", color: "text-cyan-400" },
+    { title: "Comercial", icon: "fa-shop", color: "text-purple-400" },
+    { title: "Mercadeo", icon: "fa-bullhorn", color: "text-[#9CC11F]" },
+    { title: "Innovación", icon: "fa-lightbulb", color: "text-white" },
+    { title: "Transformación", icon: "fa-rocket", color: "text-cyan-400" },
+    { title: "Finanzas", icon: "fa-chart-line", color: "text-purple-400" },
+    { title: "Talento", icon: "fa-users", color: "text-[#9CC11F]" },
+    { title: "Servicios Corp.", icon: "fa-headset", color: "text-white" }
+  ];
+
+  function renderStaticChain() {
+    const container = document.getElementById('radial-system');
+    if(!container) return;
+    const existing = container.querySelectorAll('.radial-node, .radial-label, .connector-line');
+    existing.forEach(e => e.remove());
+
+    const radius = 280; 
+    const total = valueChainData.length;
+    const angleStep = (2 * Math.PI) / total;
+    const centerX = 325; 
+    const centerY = 325;
+
+    valueChainData.forEach((item, index) => {
+      const angle = index * angleStep - (Math.PI / 2);
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+
+      const line = document.createElement('div');
+      line.className = 'connector-line';
+      line.style.width = radius + "px";
+      line.style.transform = `translate(0, 0) rotate(${angle * 180 / Math.PI}deg)`;
+      container.appendChild(line);
+
+      const node = document.createElement('div');
+      node.className = 'radial-node';
+      node.style.left = (centerX + x - 30) + "px";
+      node.style.top = (centerY + y - 30) + "px";
+      node.innerHTML = `<i class="fa-solid ${item.icon} ${item.color.replace('text-', '')}"></i>`;
+      container.appendChild(node);
+
+      const label = document.createElement('div');
+      label.className = 'radial-label';
+      label.innerText = item.title;
+      
+      const labelRadius = radius + 60;
+      const lx = Math.cos(angle) * labelRadius;
+      const ly = Math.sin(angle) * labelRadius;
+      
+      label.style.left = (centerX + lx - 70) + "px";
+      label.style.top = (centerY + ly - 8) + "px";
+      container.appendChild(label);
+    });
+  }
 
   function showModule(moduleId){
     document.querySelectorAll(".module-content").forEach(m => m.classList.remove("active"));
@@ -794,32 +671,10 @@
     if (mainContainer) mainContainer.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function openSkillsModal(){
-    const modal = document.getElementById("skillsModal");
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden","false");
-  }
-  function closeSkillsModal(){
-    const modal = document.getElementById("skillsModal");
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden","true");
-  }
-
-  // cerrar modal al hacer click fuera
-  document.addEventListener("click", (e) => {
-    const modal = document.getElementById("skillsModal");
-    if (!modal.classList.contains("open")) return;
-    if (e.target === modal) closeSkillsModal();
-  });
-
-  // escape cierra modal
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeSkillsModal();
-  });
-
   document.addEventListener("DOMContentLoaded", () => {
     showModule("contexto");
-    console.log("Alpina OS v10.4 Connected Hero Loaded.");
+    renderStaticChain();
+    console.log("Alpina OS v11.1 Final Corrected Loaded.");
   });
 </script>
 </body>
